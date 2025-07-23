@@ -1,10 +1,13 @@
 #include "Contact.hpp"
+#include "PhoneBook.hpp"
 
 int main()
 {
-    Contact saad;
+    PhoneBook myPhoneBook;
 
-    saad.setContact("saad", "", "sel-mlil", "0647443912", "i kill chlo7 for fun");
-
-    saad.display();
+    for (int i = 0; i < 8; i++)
+    {
+        Contact* contact = &myPhoneBook._contacts[i];
+        contact->display();
+    }
 }
