@@ -5,17 +5,17 @@
 
 class PhoneBook {
     private:
-    int _contactCount;
-    int _nextIndex;
+        int _contactCount;
+        int _nextIndex;
+        Contact _contacts[8];   
     
     public:
-        Contact _contacts[8];
         PhoneBook();
         PhoneBook(const PhoneBook &other);
         PhoneBook &operator=(const PhoneBook &other);
         ~PhoneBook();
 
-        // void addContact(const Contact &contact);
+        void addContact(const Contact &contact);
         // void searchContact() const;
         // void displayAllContacts() const;
 };

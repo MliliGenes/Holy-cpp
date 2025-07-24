@@ -29,3 +29,14 @@ PhoneBook& PhoneBook::operator=(const PhoneBook &other) {
 
     return *this;
 }
+
+void PhoneBook::addContact(const Contact &contact) {
+    int index = _nextIndex % 8;
+    _contacts[index] = contact;
+
+    _nextIndex ++;
+
+    if (_contactCount < 8)
+        _contactCount ++;
+}
+
