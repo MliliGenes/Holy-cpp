@@ -100,7 +100,7 @@ void PhoneBook::setCommand()
 
     command.erase(0, command.find_first_not_of(" \t\n\r\f\v"));
     command.erase(command.find_last_not_of(" \t\n\r\f\v") + 1);
-    std::transform(command.begin(), command.end(), command.begin(), ::toupper);
+    // std::transform(command.begin(), command.end(), command.begin(), ::toupper);
 
     _command = command;
 }
@@ -220,8 +220,10 @@ if (_contactCount == 0) {
     std::cout << "   " << CYAN << "──────────────────────────────────────────" << RESET << "\n";
 
     for (int i = 0; i < _contactCount; i++) {
+        std::stringstream ss;
+        ss << i;
         std::cout << "  ";
-        std::cout << formatColumn(std::to_string(i)) << "│"
+        std::cout << formatColumn(ss.str()) << "│"
                   << formatColumn(_contacts[i].getFirstName()) << "│"
                   << formatColumn(_contacts[i].getLastName()) << "│"
                   << formatColumn(_contacts[i].getNickname()) << "\n";
@@ -255,7 +257,9 @@ if (_contactCount == 0) {
         }
     }
 
-    int index = std::stoi(input);
+    std::stringstream ss(input);
+    int index;
+    ss >> index;
     
     if (index >= 0 && index < _contactCount) {
         std::cout << "\n";
