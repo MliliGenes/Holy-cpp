@@ -173,8 +173,7 @@ void PhoneBook::inputContact(void)
 
     Contact tmp;
     tmp.setContact(firstName, lastName, nickname, phoneNumber, darkestSecret);
-    const Contact& ref = tmp;
-    pushContact(ref);
+    pushContact(tmp);
 
     std::cout << "\n";
     std::cout << "  " << GREEN << "✓ " << RESET << "Contact information saved successfully!\n";
