@@ -1,35 +1,31 @@
 #include "Contact.hpp"
 #include "PhoneBook.hpp"
 
-typedef struct contact
-{
-    std::string _firstName;
-    std::string _lastName;
-    std::string _nickname;
-    std::string _phoneNumber;
-    std::string _darkestSecret;
-} contact;
-
-contact create_contact() {
-    contact c;
-
-    std::cin >> c._firstName;
-    std::cin >> c._lastName;
-    std::cin >> c._nickname;
-    std::cin >> c._phoneNumber;
-    std::cin >> c._darkestSecret;
-
-    return c;
-}
-
 int main()
 {
     PhoneBook myPhoneBook;
 
-    while (true)
+    myPhoneBook.displayWelcome();
+
+    while (myPhoneBook.getRunning())
     {
-        std::cout << "hmm:" << std::endl;
-        std::string cmd;
-        std::cin >> cmd;
+        myPhoneBook.displayMenu();
+        myPhoneBook.setCommand();
+
+        if (myPhoneBook.getCommand() == "EXIT")
+        {
+            myPhoneBook.displayGoodbye();
+            myPhoneBook.setRunning(false);
+        }
+        else if (myPhoneBook.getCommand() == "ADD") {
+            myPhoneBook.inputContact();
+        }
+        else if (myPhoneBook.getCommand() == "SEARCH") {
+            myPhoneBook.searchContact();
+        } else {
+            std::cout << "\n  " << RED << "✗ " << RESET << "Unknown command '" 
+                    << myPhoneBook.getCommand() << "'. Please use ADD, SEARCH, or EXIT.\n";
+            std::cout << CYAN << "  ─────────────────────────────────────────\n" << RESET;
+        }
     }
-}
+} 

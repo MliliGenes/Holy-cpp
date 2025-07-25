@@ -48,9 +48,26 @@ void Contact::setContact(
 }
 
 void Contact::display() const {
-    std::cout << "First Name: "      << _firstName      << std::endl;
-    std::cout << "Last Name: "       << _lastName       << std::endl;
-    std::cout << "Nickname: "        << _nickname       << std::endl;
-    std::cout << "Phone Number: "    << _phoneNumber    << std::endl;
-    std::cout << "Darkest Secret: "  << _darkestSecret  << std::endl;
+std::cout << "    " << CYAN << "→ " << RESET << BOLD << "First Name: " << RESET 
+              << _firstName << "\n";
+    std::cout << "    " << CYAN << "→ " << RESET << BOLD << "Last Name: " << RESET 
+              << _lastName << "\n";
+    std::cout << "    " << CYAN << "→ " << RESET << BOLD << "Nickname: " << RESET 
+              << _nickname << "\n";
+    std::cout << "    " << CYAN << "→ " << RESET << BOLD << "Phone Number: " << RESET 
+              << _phoneNumber << "\n";
+    std::cout << "    " << CYAN << "→ " << RESET << BOLD << "Darkest Secret: " << RESET 
+              << _darkestSecret << "\n";
+}
+
+std::string Contact::getFirstName(void) const {
+    return _firstName;
+}
+
+std::string Contact::getLastName(void) const {
+    return _lastName;
+}
+
+std::string Contact::getNickname(void) const {
+    return _nickname;
 }
