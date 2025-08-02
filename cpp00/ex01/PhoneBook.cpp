@@ -90,7 +90,7 @@ void PhoneBook::setCommand()
 {
     std::string command;
 
-    std::cout << "  " << CYAN << "→ " << RESET << "Enter command " 
+    std::cout << "  " << CYAN << "→ " << RESET << "Enter command " git q
             << DIM << "(ADD/SEARCH/EXIT)" << RESET << ": ";
     
     if (!std::getline(std::cin, command)) {
@@ -193,7 +193,7 @@ std::string PhoneBook::formatColumn(const std::string& text) const {
 }
 
 void PhoneBook::searchContact(void) const {
-if (_contactCount == 0) {
+    if (_contactCount == 0) {
         std::cout << "\n";
         std::cout << BLUE << "  ╭─────────────────────────────────────────╮\n" << RESET;
         std::cout << BLUE << "  │" << BOLD << WHITE << "            SEARCH CONTACTS              " << RESET << BLUE << "│\n" << RESET;

@@ -1,4 +1,4 @@
-NAME = a7san_telephone
+NAME = allo
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
