@@ -90,7 +90,7 @@ void PhoneBook::setCommand()
 {
     std::string command;
 
-    std::cout << "  " << CYAN << "→ " << RESET << "Enter command " git q
+    std::cout << "  " << CYAN << "→ " << RESET << "Enter command " 
             << DIM << "(ADD/SEARCH/EXIT)" << RESET << ": ";
     
     if (!std::getline(std::cin, command)) {
@@ -100,7 +100,6 @@ void PhoneBook::setCommand()
 
     command.erase(0, command.find_first_not_of(" \t\n\r\f\v"));
     command.erase(command.find_last_not_of(" \t\n\r\f\v") + 1);
-    // std::transform(command.begin(), command.end(), command.begin(), ::toupper);
 
     _command = command;
 }
@@ -187,7 +186,7 @@ std::string PhoneBook::formatColumn(const std::string& text) const {
     
     std::string result = text;
     while (result.length() < 10) {
-        result = " " + result;  // Right align by adding spaces to the left
+        result = " " + result;
     }
     return result;
 }
