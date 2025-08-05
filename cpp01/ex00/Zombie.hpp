@@ -6,7 +6,7 @@
 #include <cstddef>
 
 #define MEOW "BraiiiiiiinnnzzzZ..."
-#define DEAD ""
+#define DEAD "OOooH NNOoo!!! Nooo bRaAiiiIIIiNZzzz..."
 
 class Zombie {
         

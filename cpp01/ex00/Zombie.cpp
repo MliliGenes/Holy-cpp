@@ -12,7 +12,10 @@ void Zombie::announce( void ) {
 Zombie::~Zombie() {
 
     // meow
-    std::cout << _name << std::endl;
+    std::cout << _name 
+        << ": "
+        << DEAD
+        << std::endl;
 
 }
 
@@ -49,10 +52,6 @@ void randomChump( std::string name ) {
             << std::endl;
 
     }
+
 }
-
-
-
-
-
 
