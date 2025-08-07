@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <string>
-#include <cstddef>
 
 #define MEOW "BraiiiiiiinnnzzzZ..."
 #define DEAD "OOooH NNOoo!!! Nooo bRaAiiiIIIiNZzzz..."
@@ -16,18 +15,14 @@ class Zombie {
 
     public :
 
-        Zombie( std::string name ) : _name( name ) {}
+        Zombie( void );
         ~Zombie( void );
+
         void announce( void );
+        void _setName( std::string );
 
 };
 
-
-
-Zombie *newZombie( std::string name );
-
-void randomChump( std::string name );
-
-
+Zombie* zombieHorde( int N, std::string name );
 
 # endif

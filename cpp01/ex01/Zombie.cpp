@@ -1,6 +1,12 @@
 #include "Zombie.hpp"
 
-Zombie::~Zombie() {
+Zombie::Zombie( void ) {
+
+    _name = "";
+
+} 
+
+Zombie::~Zombie( void ) {
 
     // meow
     std::cout << _name 
@@ -19,3 +25,8 @@ void Zombie::announce( void ) {
 
 }
 
+void Zombie::_setName ( std::string name ) {
+
+    _name = name;
+
+}
