@@ -1,0 +1,56 @@
+#include "searchAndReplace.hpp"
+
+int main(int ac, char **av) {
+
+    std::string from;
+    std::string to;
+    std::string file;
+
+    if (ac != 4) {
+
+        std::cerr << "meow ?!" << std::endl;
+        return 1;
+
+    }
+
+    from = av[2];
+    to = av[3]; 
+    file = av[1];
+
+    std::ifstream inFile(file.c_str());
+    if (!inFile.is_open()) {
+
+        std::cerr << "Error: Cannot open input file '" << file << "'" << std::endl;
+        return 1;
+
+    }
+
+    std::ofstream outFile((file + ".replace").c_str());
+    if (!outFile.is_open()) {
+
+        std::cerr << "Error: Cannot create output file '" << outFile << "'" << std::endl;
+        inFile.close();
+        return 1;
+
+    }
+    
+    if (inFile.is_open()) {
+       
+        std::string line;
+        
+        while (getline(inFile, line)) {
+            
+            searchAndReplace(line, from, to);
+            outFile << line; 
+
+            if (!inFile.eof())
+                outFile << std::endl;
+            
+        }
+
+    }
+
+    inFile.close();
+    outFile.close();
+
+}
