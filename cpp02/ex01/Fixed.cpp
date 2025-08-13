@@ -47,3 +47,33 @@ int Fixed::getRawBits( void ) const {
     return fixedPoint;
 
 }
+
+Fixed::Fixed( const int rawInt ) {
+
+    fixedPoint = rauInt << fractionalBits;
+
+}
+
+int Fixed::toInt( void ) const {
+
+    return fixedPoint >> fractionalBits;
+
+}
+
+Fixed::Fixed( const float rawFloat ) {
+
+    fixedPoint = roundf( rawFloat * ( 1 << fractionalBits ) );
+
+}
+
+float Fixed::toFloat( void ) const {
+
+    return fixedPoint / ( 1 << fractionalBits );
+
+}
+
+std::ostream& operator<<(std::ostream& os, const Fixed& fixed) {
+    os << fixed.toFloat(); // insert the float version into the stream
+    return os; // allow chaining: cout << a << b;
+}
+
