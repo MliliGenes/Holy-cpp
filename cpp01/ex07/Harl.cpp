@@ -24,15 +24,15 @@ void Harl::complain(std::string level) {
         case DEBUG_L:
             std::cout << "[ " << levels[0] << " ]\n";
             (this->*funcs[0])();
-            [[fallthrough]];
+            // [[fallthrough]];
         case INFO_L:
             std::cout << "[ " << levels[1] << " ]\n";
             (this->*funcs[1])();
-            [[fallthrough]];
+            // [[fallthrough]];
         case WARNING_L:
             std::cout << "[ " << levels[2] << " ]\n";
             (this->*funcs[2])();
-            [[fallthrough]];
+            // [[fallthrough]];
         case ERROR_L:
             std::cout << "[ " << levels[3] << " ]\n";
             (this->*funcs[3])();
