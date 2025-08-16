@@ -107,48 +107,48 @@ bool Fixed::operator>=( const Fixed& right ) {
 
 bool Fixed::operator==( const Fixed& right ) {
 
-    return fixedPfoint == right.fixedPoint;
+    return fixedPoint == right.fixedPoint;
 
 }
 
 bool Fixed::operator!=( const Fixed& right ) {
 
-    return fixedPfoint != right.fixedPoint;
+    return fixedPoint != right.fixedPoint;
 
 }
 
 Fixed Fixed::operator+( const Fixed& other ) const {
 
-    return Fixed( fixedPoint + other.FixedPoint );
+    return Fixed( fixedPoint + other.fixedPoint );
 
 }
 
 Fixed Fixed::operator-( const Fixed& other ) const {
 
-    return Fixed( fixedPoint - other.FixedPoint );
+    return Fixed( fixedPoint - other.fixedPoint );
 
 }
 
 Fixed Fixed::operator*( const Fixed& other ) const {
 
-    return Fixed( fixedPoint * other.FixedPoint / ( 1 << fractionalBits ) );
+    return Fixed( fixedPoint * other.fixedPoint / ( 1 << fractionalBits ) );
 
 }
 
 Fixed Fixed::operator/( const Fixed& other ) const {
 
-    return Fixed( fixedPoint / other.FixedPoint * ( 1 << fractionalBits ) );
+    return Fixed( fixedPoint / other.fixedPoint * ( 1 << fractionalBits ) );
 
 }
 
-Fixed& operator++( void ) {
+Fixed& Fixed::operator++( void ) {
 
     fixedPoint++;
     return *this;
 
 }
 
-Fixed  operator++( int ) {
+Fixed  Fixed::operator++( int ) {
 
     Fixed old( fixedPoint );
     fixedPoint++;
@@ -156,12 +156,12 @@ Fixed  operator++( int ) {
 
 }
 
-Fixed& operator--() {
+Fixed& Fixed::operator--() {
     fixedPoint--;   // -ε
     return *this;
 }
 
-Fixed operator--(int) {
+Fixed Fixed::operator--(int) {
     Fixed old(*this); // store old state
     fixedPoint--;     // -ε
     return old;       // return old value
