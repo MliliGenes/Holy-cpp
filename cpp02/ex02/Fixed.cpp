@@ -79,3 +79,92 @@ std::ostream& operator<<(std::ostream& os, const Fixed& fixed) {
     return os; // allow chaining: cout << a << b;
 }
 
+
+bool Fixed::operator<( const Fixed& right ) {
+
+    return fixedPoint < right.fixedPoint;
+
+}
+
+
+bool Fixed::operator<=( const Fixed& right ) {
+
+    return fixedPoint <= right.fixedPoint;
+
+}
+
+bool Fixed::operator>( const Fixed& right ) {
+
+    return fixedPoint > right.fixedPoint;
+
+}
+
+bool Fixed::operator>=( const Fixed& right ) {
+
+    return fixedPoint >= right.fixedPoint;
+
+}
+
+bool Fixed::operator==( const Fixed& right ) {
+
+    return fixedPfoint == right.fixedPoint;
+
+}
+
+bool Fixed::operator!=( const Fixed& right ) {
+
+    return fixedPfoint != right.fixedPoint;
+
+}
+
+Fixed Fixed::operator+( const Fixed& other ) const {
+
+    return Fixed( fixedPoint + other.FixedPoint );
+
+}
+
+Fixed Fixed::operator-( const Fixed& other ) const {
+
+    return Fixed( fixedPoint - other.FixedPoint );
+
+}
+
+Fixed Fixed::operator*( const Fixed& other ) const {
+
+    return Fixed( fixedPoint * other.FixedPoint / ( 1 << fractionalBits ) );
+
+}
+
+Fixed Fixed::operator/( const Fixed& other ) const {
+
+    return Fixed( fixedPoint / other.FixedPoint * ( 1 << fractionalBits ) );
+
+}
+
+Fixed& operator++( void ) {
+
+    fixedPoint++;
+    return *this;
+
+}
+
+Fixed  operator++( int ) {
+
+    Fixed old( fixedPoint );
+    fixedPoint++;
+    return old;
+
+}
+
+Fixed& operator--() {
+    fixedPoint--;   // -ε
+    return *this;
+}
+
+Fixed operator--(int) {
+    Fixed old(*this); // store old state
+    fixedPoint--;     // -ε
+    return old;       // return old value
+}
+
+

@@ -50,7 +50,8 @@ int Fixed::getRawBits( void ) const {
 
 Fixed::Fixed( const int rawInt ) {
 
-    fixedPoint = rauInt << fractionalBits;
+    std::cout << "Int constructor called" << std::endl;
+    fixedPoint = rawInt << fractionalBits;
 
 }
 
@@ -62,13 +63,14 @@ int Fixed::toInt( void ) const {
 
 Fixed::Fixed( const float rawFloat ) {
 
+    std::cout << "Float constructor called" << std::endl;
     fixedPoint = roundf( rawFloat * ( 1 << fractionalBits ) );
 
 }
 
 float Fixed::toFloat( void ) const {
 
-    return fixedPoint / ( 1 << fractionalBits );
+    return (float)fixedPoint / ( 1 << fractionalBits );
 
 }
 
