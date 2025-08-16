@@ -1,3 +1,5 @@
+MAKEFLAGS += --color=always
+
 NAME = ex01
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
