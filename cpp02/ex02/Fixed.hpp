@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <cmath>
-// #include ""
 
 
 class Fixed {
@@ -55,3 +54,4 @@ class Fixed {
 };
 
 std::ostream& operator<<( std::ostream&, const Fixed& );
+
