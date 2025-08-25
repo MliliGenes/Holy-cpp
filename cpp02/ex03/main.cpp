@@ -15,20 +15,27 @@ int main(void) {
     std::cout << "\n---\n" << std::endl;
 
     // --- Test Point + Triangle inclusion ---
-    Point A(1.0f, 1.0f);
-    Point B(5.0f, 0.0f);
-    Point C(3.0f, 3.0f);
+    Point A(0.0f, 0.0f);
+    Point B(4.0f, 0.0f);
+    Point C(2.0f, 4.0f);
 
-    Point P(3.0f, .0f);
+    Point P_inside(2.0f, 2.0f);
+    Point P_outside(5.0f, 2.0f);
+    Point P_edge(2.0f, 0.0f); // lies on AB
 
-    std::cout << (P.getx() - B.getx())
-            << " * "
-            << (A.gety() - B.gety())
-            << " - "
-            << (A.getx() - B.getx()) << std::endl;
+    std::cout << "Testing pointInTriangle:" << std::endl;
 
-    std::cout << (bsp(A, B, C, P) ? "inside" : "outside")
-            << std::endl;
+    std::cout << "P_inside (2,2): "
+              << (bsp(A, B, C, P_inside) ? "inside" : "outside")
+              << std::endl;
+
+    std::cout << "P_outside (5,2): "
+              << (bsp(A, B, C, P_outside) ? "inside" : "outside")
+              << std::endl;
+
+    std::cout << "P_edge (2,0): "
+              << (bsp(A, B, C, P_edge) ? "inside" : "outside")
+              << std::endl;
 
     return 0;
 }
