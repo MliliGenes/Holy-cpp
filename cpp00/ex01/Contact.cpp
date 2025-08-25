@@ -47,7 +47,7 @@ void Contact::setContact(
     _darkestSecret = darkestSecret;
 }
 
-void Contact::display() const {
+void Contact::displagety() const {
 std::cout << "    " << CYAN << "→ " << RESET << BOLD << "First Name: " << RESET 
               << _firstName << "\n";
     std::cout << "    " << CYAN << "→ " << RESET << BOLD << "Last Name: " << RESET 

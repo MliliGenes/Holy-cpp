@@ -1,12 +1,12 @@
 #include "Point.hpp"
 
-Fixed Point::getX( void ) const {
+Fixed Point::getx( void ) const {
 
     return x;
 
 }
 
-Fixed Point::getY( void ) const {
+Fixed Point::gety( void ) const {
 
     return y;
 
@@ -20,8 +20,8 @@ Point::~Point( void ) {
 
 Point::Point( const Point& other) {
 
-    x = other.getX();
-    y = other.getY();
+    x = other.x;
+    y = other.y;
 
 }
 
@@ -30,21 +30,17 @@ Point& Point::operator=( const Point& other ) {
     if (&other == this)
         return *this;
 
-    x = other.getX();
-    y = other.getY();
+    x = other.getx();
+    y = other.gety();
 
     return *this;
 }
 
-Fixed orient(Point const &a, Point const &b, Point const &c) {
-    std::cout << a.getX() << std::endl;
-    std::cout << a.getY() << std::endl;
-    std::cout << b.getX() << std::endl;
-    std::cout << b.getY() << std::endl;
-    std::cout << c.getX() << std::endl;
-    std::cout << c.getY() << std::endl;
-    return (a.getX() - c.getX()) * (b.getY() - c.getY())
-         - (b.getX() - c.getX()) * (a.getY() - c.getY());
+Fixed orient(Point const &P, Point const &A, Point const &B) {
+
+    return ((P.getx() - B.getx()) * (A.gety() - B.gety()))
+            - ((A.getx() - B.getx()) * (P.gety() - B.gety()));
+
 }
 
 bool bsp( Point const a, Point const b, Point const c, Point const p) {
@@ -54,6 +50,7 @@ bool bsp( Point const a, Point const b, Point const c, Point const p) {
     Fixed d3 = orient(p, c, a);
 
     std::cout << d1 << d2 << d3 << std::endl;
+
     bool hasNeg = (d1 < Fixed(0)) || (d2 < Fixed(0)) || (d3 < Fixed(0));
     bool hasPos = (d1 > Fixed(0)) || (d2 > Fixed(0)) || (d3 > Fixed(0));
 

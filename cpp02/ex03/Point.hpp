@@ -6,7 +6,8 @@ class Point {
 
     private :
 
-        Fixed x,y;
+        Fixed x;
+        Fixed y;
 
 
     public :
@@ -17,8 +18,8 @@ class Point {
         Point( const Point& other );
         Point& operator=( const Point& other );
 
-        Fixed getX() const ;
-        Fixed getY() const ;
+        Fixed getx() const ;
+        Fixed gety() const ;
 
 };
 

@@ -119,13 +119,13 @@ bool Fixed::operator!=( const Fixed& right ) const {
 
 Fixed Fixed::operator+( const Fixed& other ) const {
 
-    return Fixed( fixedPoint + other.fixedPoint );
+    return Fixed( this->toFloat() + other.toFloat() );
 
 }
 
 Fixed Fixed::operator-( const Fixed& other ) const {
 
-    return Fixed( fixedPoint - other.fixedPoint );
+    return Fixed( this->toFloat() - other.toFloat() );
 
 }
 

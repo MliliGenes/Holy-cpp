@@ -43,7 +43,7 @@ class Contact {
             const std::string& darkestSecret
         );
 
-        void display() const;
+        void displagety() const;
 };
 
 #endif
