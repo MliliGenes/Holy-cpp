@@ -1,57 +1,34 @@
 #include "ClapTrap.hpp"
+#include "ScavTrap.hpp"
 
-ClapTrap::ClapTrap(const std::string _name) : name(_name), hitPoints(10), energyPoints(10), attackDamage(0)
-{
-    std::cout << "le claptrap: " << _name << " just been born!" << std::endl;
-}
+int main() {
+    std::cout << "=== Bienvenue à la grande bataille des robots français! ===\n" << std::endl;
 
-ClapTrap::~ClapTrap(void)
-{
-    std::cout << "le claptrap: " << name << " just been aborted!" << std::endl;
-}
+    ClapTrap clap("Petit-Pain");
+    ScavTrap scav("Grand-Croissant");
 
-ClapTrap::ClapTrap(const ClapTrap &other)
-{
-    this->name = other.name;
-    this->hitPoints = other.hitPoints;
-    this->energyPoints = other.energyPoints;
-    this->attackDamage = other.attackDamage;
-}
+    std::cout << "\n--- Round 1: Attaque de base ---" << std::endl;
+    clap.attack("ze unsuspecting baguette thief");
+    scav.attack("ze entire bakery");
 
-ClapTrap &ClapTrap::operator=(const ClapTrap &other)
-{
-    if (this == &other)
-        return *this;
+    std::cout << "\n--- Round 2: Ouch, damage incoming ---" << std::endl;
+    clap.takeDamage(7);
+    scav.takeDamage(30);
 
-    this->name = other.name;
-    this->hitPoints = other.hitPoints;
-    this->energyPoints = other.energyPoints;
-    this->attackDamage = other.attackDamage;
+    std::cout << "\n--- Round 3: Repairs avec amour ---" << std::endl;
+    clap.beRepaired(5);
+    scav.beRepaired(20);
 
-    return *this;
-}
+    std::cout << "\n--- Round 4: Special French powers ---" << std::endl;
+    scav.guardGate();
 
-void ClapTrap::attack(const std::string &target) {
-    if (hitPoints > 0 && energyPoints > 0) {
-        energyPoints--;
-        std::cout << "ClapTrap " << name << " surrenders... wait non! Attacks " << target 
-                  << " with " << attackDamage << " points of oui-damage!" << std::endl;
-    } else
-        std::cout << "ClapTrap " << name << " cannot attack! Too busy eating baguettes!" << std::endl;
-}
+    std::cout << "\n--- Round 5: Copy & Assignment ---" << std::endl;
+    ScavTrap scavCopy(scav);
+    scavCopy.attack("ze impostor croissant maker");
 
-void ClapTrap::takeDamage(unsigned int amount) {
-    hitPoints = (amount >= hitPoints) ? 0 : hitPoints - amount;
-    std::cout << "Sacré bleu! ClapTrap " << name << " takes " << amount 
-              << " points of damage! Très painful!" << std::endl;
-}
+    ClapTrap clapCopy = clap;
+    clapCopy.attack("ze fake butter");
 
-void ClapTrap::beRepaired(unsigned int amount) {
-    if (hitPoints > 0 && energyPoints > 0) {
-        energyPoints--;
-        hitPoints += amount;
-        std::cout << "ClapTrap " << name << " repairs itself with ze power of " 
-                  << amount << " French engineering! Magnifique!" << std::endl;
-    } else
-        std::cout << "ClapTrap " << name << " cannot repair! Must find ze croissant first!" << std::endl;
+    std::cout << "\n=== La bataille est terminée! ===" << std::endl;
+    return 0;
 }

@@ -49,9 +49,9 @@ bool bsp( Point const a, Point const b, Point const c, Point const p) {
     Fixed d2 = orient(p, b, c);
     Fixed d3 = orient(p, c, a);
 
-    bool hasNeg = (d1 < Fixed(0)) || (d2 < Fixed(0)) || (d3 < Fixed(0));
-    bool hasPos = (d1 > Fixed(0)) || (d2 > Fixed(0)) || (d3 > Fixed(0));
+    bool hasNeg = (d1 < Fixed(0)) && (d2 < Fixed(0)) && (d3 < Fixed(0));
+    bool hasPos = (d1 > Fixed(0)) && (d2 > Fixed(0)) && (d3 > Fixed(0));
 
-    return !(hasNeg && hasPos) && d1 != 0 && d2 != 0 && d3 != 0;
+    return (hasNeg || hasPos);
 
 }
