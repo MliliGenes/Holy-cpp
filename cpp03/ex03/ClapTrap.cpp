@@ -55,3 +55,7 @@ void ClapTrap::beRepaired(unsigned int amount) {
     } else
         std::cout << "ClapTrap " << name << " cannot repair! Must find ze croissant first!" << std::endl;
 }
+
+const std::string ClapTrap::getName( void ) const {
+    return name + "_clap_name";
+}

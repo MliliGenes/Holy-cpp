@@ -2,10 +2,10 @@
 
 ScavTrap::ScavTrap( const std::string _name ) : ClapTrap(_name) {
 
-    hitPoints = 100;
+    // hitPoints = 100;
     energyPoints = 50;
-    attackDamage = 20;
-    std::cout << "le scavtrap: " << _name << " just been born!" << std::endl;
+    // attackDamage = 20;
+    std::cout << "le scavtrap: " << name << " just been born!" << std::endl;
 
 }
 
@@ -27,4 +27,8 @@ ScavTrap &ScavTrap::operator=(const ScavTrap &other) {
 
 void ScavTrap::guardGate() {
     std::cout << "ScavTrap " << name << " is now in Gatekeeper Mode! Nobody passes sans ze proper baguette!" << std::endl;
+}
+
+unsigned int ScavTrap::getEnergyPoints( void ) const {
+    return energyPoints;
 }

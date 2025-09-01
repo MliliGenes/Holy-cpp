@@ -1,11 +1,10 @@
 #include "FragTrap.hpp"
 
-FragTrap::FragTrap(const std::string _name) : ClapTrap(_name)={
-
+FragTrap::FragTrap(const std::string _name) : ClapTrap(_name){
     hitPoints = 100;
-    energyPoints = 50;
-    attackDamage = 20;
-    std::cout << "le fragtrap: " << _name << " just been born!" << std::endl;
+    // energyPoints = 100;
+    attackDamage = 30;
+    std::cout << "le fragtrap: " << name << " just been born!" << std::endl;
 }
 
 FragTrap::~FragTrap() {
@@ -30,4 +29,12 @@ void FragTrap::highFivesGuys(void) {
     std::cout << "FragTrap " << name 
             << " requests a *HIGH FIVE*! ✋ Allez mes amis, spread ze positivity!" 
             << std::endl;
+}
+
+unsigned int FragTrap::getHitPoints( void ) const {
+    return hitPoints;
+}
+
+unsigned int FragTrap::getAttackDamage( void ) const {
+    return attackDamage;
 }

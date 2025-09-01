@@ -23,4 +23,6 @@ public:
     void takeDamage(unsigned int amount);
     void beRepaired(unsigned int amount);
 
+    const std::string getName( void ) const;
+
 };

@@ -10,5 +10,5 @@ class ScavTrap : virtual public ClapTrap {
         ScavTrap &operator=(const ScavTrap &other);
 
         void guardGate( void );
-
+        unsigned int getEnergyPoints( void ) const;
 };
