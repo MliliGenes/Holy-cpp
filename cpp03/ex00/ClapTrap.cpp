@@ -55,3 +55,5 @@ void ClapTrap::beRepaired(unsigned int amount) {
     } else
         std::cout << "ClapTrap " << name << " cannot repair! Must find ze croissant first!" << std::endl;
 }
+
+
