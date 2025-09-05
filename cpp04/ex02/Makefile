@@ -4,10 +4,13 @@ CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
 SRCDIR = .
 OBJDIR = obj
+
 SOURCES = $(wildcard $(SRCDIR)/*.cpp)
+HEADERS = $(wildcard $(SRCDIR)/*.hpp)
+
 OBJECTS = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
-INCDIR = include
+INCDIR = .
 INCLUDES = -I$(INCDIR)
 
 GREEN = \033[0;32m
@@ -22,7 +25,8 @@ $(NAME): $(OBJECTS)
 	@$(CXX) $(OBJECTS) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(NC)"
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
+# Make each .o depend on .cpp + all headers
+$(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS) | $(OBJDIR)
 	@echo "$(BLUE)Compiling $<...$(NC)"
 	@$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
@@ -41,7 +45,7 @@ fclean: clean
 	@rm -f $(NAME)
 	@echo "$(GREEN)✓ Full clean completed!$(NC)"
 
-.PHONY: all re clean fclean
+.PHONY: all re clean fclean help
 
 help:
 	@echo "Available targets:"
