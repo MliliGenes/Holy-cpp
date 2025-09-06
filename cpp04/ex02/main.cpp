@@ -1,4 +1,4 @@
-#include "Animal.hpp"
+#include "AnimalA.hpp"
 #include "Dog.hpp"
 #include "Cat.hpp"
 #include "WrongAnimal.hpp"
@@ -6,8 +6,10 @@
 
 int main() {
     std::cout << "=== Correct Classes (with virtual) ===" << std::endl;
-    const Animal* dog = new Dog();
-    const Animal* cat = new Cat();
+    const AnimalA* dog = new Dog();
+    const AnimalA* cat = new Cat();
+
+    // !const AnimalA* animal = new AnimalA(); can not intantiate abstract class
 
     std::cout << "Dog through Animal*: ";
     dog->makeSound(); // ✅ runtime polymorphism → Woof!

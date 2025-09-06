@@ -1,7 +1,7 @@
-#include "Animal.hpp"
+#include "AnimalA.hpp"
 #include "Dog.hpp"
 #include "Cat.hpp"
-#include "WrongAnimal.hpp"
+#include "WrongAnimalA.hpp"
 #include "WrongCat.hpp"
 
 int main() {
