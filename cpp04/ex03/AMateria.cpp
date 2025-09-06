@@ -2,7 +2,7 @@
 #include "ICharacter.hpp"
 #include <iostream>
 
-AMateria::AMateria(std::string const & type) : _type(type)
+AMateria::AMateria( void ) : _type("...")
 {
 }
 
@@ -12,11 +12,7 @@ AMateria::AMateria(const AMateria& other) : _type(other._type)
 
 AMateria& AMateria::operator=(const AMateria& other)
 {
-    if (this != &other)
-    {
-        // Type should not be copied according to subject
-        // _type = other._type;
-    }
+    (void)other;
     return *this;
 }
 
@@ -32,5 +28,4 @@ std::string const & AMateria::getType() const
 void AMateria::use(ICharacter& target)
 {
     (void)target;
-    // Base implementation - does nothing
 }

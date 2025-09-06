@@ -11,7 +11,7 @@ protected:
     std::string _type;
 
 public:
-    AMateria(std::string const & type);
+    AMateria( void );
     AMateria(const AMateria& other);
     AMateria& operator=(const AMateria& other);
     virtual ~AMateria();
