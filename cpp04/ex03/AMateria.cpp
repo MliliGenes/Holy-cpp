@@ -1,8 +1,7 @@
 #include "AMateria.hpp"
 #include "ICharacter.hpp"
-#include <iostream>
 
-AMateria::AMateria( void ) : _type("...")
+AMateria::AMateria( const std::string& type ) : _type(type)
 {
 }
 
