@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AnimalA.hpp"
+#include "Animal.hpp"
 #include "Brain.hpp"
 
 class Cat : public Animal {

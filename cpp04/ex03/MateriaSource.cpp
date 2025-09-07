@@ -65,6 +65,7 @@ void MateriaSource::learnMateria(AMateria* materia)
             return;
         }
     }
+    delete materia; // No space, delete the materia to prevent memory leak
 }
 
 AMateria* MateriaSource::createMateria(std::string const & type)

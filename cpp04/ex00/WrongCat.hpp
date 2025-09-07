@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WrongAnimalA.hpp"
+#include "WrongAnimal.hpp"
 
 class WrongCat : public WrongAnimal {
 public:
