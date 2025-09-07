@@ -1,16 +1,4 @@
-NAME = materia
-
-SRCS = main.cpp AMateria.cpp Character.cpp Ice.cpp Cure.cpp MateriaSource.cpp
-
-OBJS = $(SRCS:.cpp=.o)
-
-CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
-	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJNAME = ex03
+NAME = ex03
 CXX = c++
 CXXFLAGS = -Wall -Wextra -Werror -std=c++98
 
@@ -67,17 +55,3 @@ help:
 	@echo "  clean    - Remove object files"
 	@echo "  fclean   - Remove object files and executable"
 	@echo "  help     - Show this help message"
-S)
-
-%.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-clean:
-	rm -f $(OBJS)
-
-fclean: clean
-	rm -f $(NAME)
-
-re: fclean all
-
-.PHONY: all clean fclean re

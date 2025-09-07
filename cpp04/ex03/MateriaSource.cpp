@@ -61,10 +61,11 @@ void MateriaSource::learnMateria(AMateria* materia)
     {
         if (!_materias[i])
         {
-            _materias[i] = materia->clone();
+            _materias[i] = materia;
             return;
         }
     }
+    delete materia;
     // Can't learn more materias - inventory full
 }
 

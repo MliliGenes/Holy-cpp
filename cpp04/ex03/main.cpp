@@ -5,29 +5,51 @@
 #include "MateriaSource.hpp"
 #include "IMateriaSource.hpp"
 #include "ICharacter.hpp"
+#include <iostream>
+#include <vector>
 
 int main()
 {
     IMateriaSource* src = new MateriaSource();
     src->learnMateria(new Ice());
     src->learnMateria(new Cure());
-    
+
     ICharacter* me = new Character("me");
-    
-    AMateria* tmp;
-    tmp = src->createMateria("ice");
-    me->equip(tmp);
-    tmp = src->createMateria("cure");
-    me->equip(tmp);
-    
+
+    // Equip 4 Materia (max slots)
+    AMateria* tmp1 = src->createMateria("ice");
+    AMateria* tmp2 = src->createMateria("cure");
+    AMateria* tmp3 = src->createMateria("ice");
+    AMateria* tmp4 = src->createMateria("cure");
+    me->equip(tmp1);
+    me->equip(tmp2);
+    me->equip(tmp3);
+    me->equip(tmp4);
+
+    // Try to equip a 5th Materia (should fail or be ignored)
+    AMateria* tmp5 = src->createMateria("ice");
+    me->equip(tmp5);
+
+    // Unequip slot 1 and stash it
+    me->unequip(1);
+
+    // Equip another Materia in the freed slot
+    AMateria* tmp6 = src->createMateria("cure");
+    me->equip(tmp6);
+
     ICharacter* bob = new Character("bob");
-    
-    me->use(0, *bob);
-    me->use(1, *bob);
-    
+
+    // Use all equipped Materia on bob
+    for (int i = 0; i < 4; ++i)
+        me->use(i, *bob);
+
+    // Clean up
     delete bob;
     delete me;
     delete src;
-    
+
+    // Also delete tmp5 if it was not equipped
+    delete tmp5;
+
     return 0;
 }
