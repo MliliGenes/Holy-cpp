@@ -65,8 +65,6 @@ void MateriaSource::learnMateria(AMateria* materia)
             return;
         }
     }
-    delete materia;
-    // Can't learn more materias - inventory full
 }
 
 AMateria* MateriaSource::createMateria(std::string const & type)

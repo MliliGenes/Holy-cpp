@@ -48,8 +48,5 @@ int main()
     delete me;
     delete src;
 
-    // Also delete tmp5 if it was not equipped
-    delete tmp5;
-
     return 0;
 }

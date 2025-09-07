@@ -22,7 +22,7 @@ all: $(NAME)
 
 $(NAME): $(OBJECTS)
 	@echo "$(BLUE)Linking $(NAME)...$(NC)"
-	@$(CXX) $(OBJECTS) -o $(NAME)
+	@$(CXX) $(OBJECTS) -fsanitize=address -g -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(NC)"
 
 # Make each .o depend on .cpp + all headers
