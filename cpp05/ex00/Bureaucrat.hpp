@@ -20,32 +20,22 @@ class Bureaucrat {
 
         class GradeTooHighException : public std::exception {
             private:
-                std::string m_message;
+                string m_message;
 
             public:
-                GradeTooHighException(const std::string& message = "Grade too high") throw()
-                    : m_message(message) {}
-
-                virtual const char* what() const throw() {
-                    return m_message.c_str();
-                }
-
-                virtual ~GradeTooHighException() throw() {}
+                GradeTooHighException(const string& message) throw();
+                ~GradeTooHighException(void) throw();
+                const char* what() const throw();
         };
 
         class GradeTooLowException : public std::exception {
             private:
-                std::string m_message;
+                string m_message;
 
             public:
-                GradeTooLowException(const std::string& message = "Grade too low") throw()
-                    : m_message(message) {}
-
-                virtual const char* what() const throw() {
-                    return m_message.c_str();
-                }
-
-                virtual ~GradeTooLowException() throw() {}
+                GradeTooLowException(const string& message) throw();
+                ~GradeTooLowException(void) throw();
+                const char* what() const throw();
         };
 
         Bureaucrat(void);

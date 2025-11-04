@@ -1,5 +1,30 @@
 #include "Bureaucrat.hpp"
 
+Bureaucrat::
+GradeTooHighException::GradeTooHighException(const string& msg) throw() : m_message(msg) {}
+
+Bureaucrat::
+GradeTooHighException::~GradeTooHighException(void) throw() {}
+
+const char*
+Bureaucrat::
+GradeTooHighException::what() const throw() {
+	return m_message.c_str();
+}
+
+Bureaucrat::
+GradeTooLowException::GradeTooLowException(const string& msg) throw() : m_message(msg) {}
+
+Bureaucrat::
+GradeTooLowException::~GradeTooLowException(void) throw() {}
+
+const char*
+Bureaucrat::
+GradeTooLowException::what() const throw() {
+	return m_message.c_str();
+}
+
+
 Bureaucrat::Bureaucrat(void) : name("root"), grade(1) {}
 
 Bureaucrat::Bureaucrat(const string _name, const int _grade) : name(_name) {

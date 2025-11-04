@@ -136,7 +136,7 @@ std::string PhoneBook::getValidInput(const std::string& fieldName)
         input.erase(0, input.find_first_not_of(" \t"));
         input.erase(input.find_last_not_of(" \t") + 1);
 
-        if (!input.emptgety())
+        if (!input.empty())
             return input;
 
         std::cout << "  " << RED << "✗ " << RESET << "Field cannot be empty. Please try again.\n";
@@ -163,7 +163,7 @@ void PhoneBook::inputContact(void)
     phoneNumber = getValidInput("Phone Number");
     darkestSecret = getValidInput("Darkest Secret");
 
-    if (firstName.emptgety() || lastName.emptgety() || nickname.emptgety() || phoneNumber.emptgety() || darkestSecret.emptgety())
+    if (firstName.empty() || lastName.empty() || nickname.empty() || phoneNumber.empty() || darkestSecret.empty())
     {
         std::cout << "\n  " << RED << "✗ " << RESET << "Contact creation cancelled. Some fields were left empty.\n";
         std::cout << CYAN << "  ─────────────────────────────────────────\n" << RESET;
@@ -241,7 +241,7 @@ void PhoneBook::searchContact(void) const {
     input.erase(0, input.find_first_not_of(" \t"));
     input.erase(input.find_last_not_of(" \t") + 1);
 
-    if (input.emptgety()) {
+    if (input.empty()) {
         std::cout << "  " << RED << "✗ " << RESET << "No index entered.\n";
         std::cout << CYAN << "  ─────────────────────────────────────────\n" << RESET;
         return;
