@@ -45,9 +45,13 @@ class Form {
         Form(const F& other);
         F& operator=(const F& other);
 
-        int getGrade(void)
+        const string& getName(void)
             const;
-        string getName(void)
+        const int& getToSignGrade(void)
+            const;
+        const int& getToExecGrade(void)
+            const;
+        const bool& getIsSinged(void)
             const;
         
         void beSigned(B& dude); // throw this shit Form::GradeTooLowException

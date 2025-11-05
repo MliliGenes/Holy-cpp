@@ -49,11 +49,11 @@ B& Bureaucrat::operator=(const B& other) {
 	return *this;
 }
 
-int Bureaucrat::getGrade(void) const {
+const int& Bureaucrat::getGrade(void) const {
 	return grade;
 }
 
-string Bureaucrat::getName(void) const {
+const string& Bureaucrat::getName(void) const {
 	return name;
 }
 
@@ -84,7 +84,6 @@ B& Bureaucrat::demote(int to_demote) {
 	grade += to_demote;
 	return *this;
 }
-
 
 std::ostream& operator<<(std::ostream& os, const B& some_dude) {
     os << some_dude.getName() << ", bureaucrat grade " << some_dude.getGrade();

@@ -29,10 +29,10 @@ Bureaucrat::Bureaucrat(void) : name("root"), grade(1) {}
 
 Bureaucrat::Bureaucrat(const string _name, const int _grade) : name(_name) {
     if (_grade > 150) {
-		throw Bureaucrat::GradeTooLowException();
+		throw Bureaucrat::GradeTooLowException("");
     }
     if (_grade < 1) {
-		throw Bureaucrat::GradeTooHighException();
+		throw Bureaucrat::GradeTooHighException("");
     }
 	grade = _grade;
 }
@@ -50,38 +50,38 @@ B& Bureaucrat::operator=(const B& other) {
 	return *this;
 }
 
-int Bureaucrat::getGrade(void) const {
+const int& Bureaucrat::getGrade(void) const {
 	return grade;
 }
 
-string Bureaucrat::getName(void) const {
+const string& Bureaucrat::getName(void) const {
 	return name;
 }
 
 B& Bureaucrat::promote(void) {
 	if (grade == 1)
-		throw Bureaucrat::GradeTooHighException();
+		throw Bureaucrat::GradeTooHighException("");
 	grade--;
 	return *this;
 }
 
 B& Bureaucrat::promote(int to_promote) {
 	if (grade - to_promote < 1)
-		throw Bureaucrat::GradeTooHighException();
+		throw Bureaucrat::GradeTooHighException("");
 	grade -= to_promote;
 	return *this;
 }
 
 B& Bureaucrat::demote(void) {
 	if (grade == 150)
-		throw Bureaucrat::GradeTooHighException();
+		throw Bureaucrat::GradeTooHighException("");
 	grade++;
 	return *this;
 }
 
 B& Bureaucrat::demote(int to_demote) {
 	if (grade + to_demote > 150)
-		throw Bureaucrat::GradeTooLowException();
+		throw Bureaucrat::GradeTooLowException("");
 	grade += to_demote;
 	return *this;
 }

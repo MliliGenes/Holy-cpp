@@ -45,9 +45,9 @@ class Bureaucrat {
         Bureaucrat(const B& other);
         B& operator=(const B& other);
 
-        int getGrade(void)
+        const int& getGrade(void)
             const;
-        string getName(void)
+        const string& getName(void)
             const;
 
         B& promote(void);
