@@ -1,4 +1,5 @@
 #include "Bureaucrat.hpp"
+#include "Form.hpp"
 
 Bureaucrat::
 GradeTooHighException::GradeTooHighException(const string& msg) throw() : m_message(msg) {}
@@ -28,10 +29,10 @@ Bureaucrat::Bureaucrat(void) : name("root"), grade(1) {}
 
 Bureaucrat::Bureaucrat(const string& _name, const int& _grade) : name(_name) {
     if (_grade > 150) {
-		throw Bureaucrat::GradeTooLowException("");
+		throw Bureaucrat::GradeTooLowException("Grade too low");
     }
     if (_grade < 1) {
-		throw Bureaucrat::GradeTooHighException("");
+		throw Bureaucrat::GradeTooHighException("Grade too high");
     }
 	grade = _grade;
 }
@@ -59,30 +60,42 @@ const string& Bureaucrat::getName(void) const {
 
 B& Bureaucrat::promote(void) {
 	if (grade == 1)
-		throw Bureaucrat::GradeTooHighException("");
+		throw Bureaucrat::GradeTooHighException("Grade too high");
 	grade--;
 	return *this;
 }
 
 B& Bureaucrat::promote(int to_promote) {
 	if (grade - to_promote < 1)
-		throw Bureaucrat::GradeTooHighException("");
+		throw Bureaucrat::GradeTooHighException("Grade too high");
 	grade -= to_promote;
 	return *this;
 }
 
 B& Bureaucrat::demote(void) {
 	if (grade == 150)
-		throw Bureaucrat::GradeTooHighException("");
+		throw Bureaucrat::GradeTooLowException("Grade too low");
 	grade++;
 	return *this;
 }
 
 B& Bureaucrat::demote(int to_demote) {
 	if (grade + to_demote > 150)
-		throw Bureaucrat::GradeTooLowException("");
+		throw Bureaucrat::GradeTooLowException("Grade too low");
 	grade += to_demote;
 	return *this;
+}
+
+void Bureaucrat::signForm(F& wati9a) const {
+	try {
+		wati9a.beSigned(this);
+		std::cout << name << " signed " << wati9a.getName() << std::endl;
+	} catch (std::exception &e) {
+		std::cout << name << " couldn't sign " << wati9a.getName()
+			<< " because " << e.what()
+			<< std::endl;
+		throw;
+	}
 }
 
 std::ostream& operator<<(std::ostream& os, const B& some_dude) {

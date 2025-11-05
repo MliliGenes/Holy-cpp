@@ -54,7 +54,7 @@ class Form {
         const bool& getIsSinged(void)
             const;
         
-        void beSigned(B& dude); // throw this shit Form::GradeTooLowException
+        void beSigned(const B* dude); // throw this shit Form::GradeTooLowException
 };
 
 #endif
