@@ -60,7 +60,7 @@ F& Form::operator=(const F& other) {
 const string& Form::getName(void) const { return name; }
 const int& Form::getToSignGrade(void) const { return grade_to_sign; }
 const int& Form::getToExecGrade(void) const { return grade_to_exec; }
-const bool& Form::getIsSinged(void) const { return is_signed; }
+const bool& Form::getIsSigned(void) const { return is_signed; }
 
 void Form::beSigned(const B* dude) {
     if (is_signed)
