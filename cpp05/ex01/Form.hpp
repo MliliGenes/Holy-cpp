@@ -17,6 +17,8 @@ class Form {
         const int       grade_to_sign;
         const int       grade_to_exec;
 
+        F& operator=(const F& other);
+
     public:
         class GradeTooHighException : public std::exception {
             private:
@@ -43,7 +45,6 @@ class Form {
         ~Form();
 
         Form(const F& other);
-        F& operator=(const F& other);
 
         const string& getName(void)
             const;
@@ -54,7 +55,9 @@ class Form {
         const bool& getIsSigned(void)
             const;
         
-        void beSigned(const B* dude); // throw this shit Form::GradeTooLowException
+        void beSigned(const B* bureaucrat); // throw this shit Form::GradeTooLowException
 };
+
+std::ostream& operator<<(std::ostream& os, const F& form);
 
 #endif

@@ -57,9 +57,9 @@ class Bureaucrat {
         B& demote(void);
         B& demote(int to_demote);
 
-        void signForm(Form& wati9a) const;
+        void signForm(Form& form) const;
 };
 
-std::ostream& operator<<(std::ostream& os, const B& some_dude);
+std::ostream& operator<<(std::ostream& os, const B& bureaucrat);
 
 #endif

@@ -41,7 +41,7 @@ Form::Form(const string& form_name, const int& _grade_to_sign, const int& _grade
         throw Form::GradeTooLowException("Grade too low");
 }
 
-Form::~Form() { std::cout << "bye" << std::endl; }
+Form::~Form() {}
 
 Form::Form(const F& other) :
     name(other.name), is_signed(false),
@@ -50,8 +50,6 @@ Form::Form(const F& other) :
 }
 
 F& Form::operator=(const F& other) {
-    // everything is const why would i copy ?
-    // and the is_signed is bound to a form setting the flag to whatever the other's value is, would be a bypass of the requirements
     if (&other == this)
         return *this;
     return *this;
@@ -62,11 +60,23 @@ const int& Form::getToSignGrade(void) const { return grade_to_sign; }
 const int& Form::getToExecGrade(void) const { return grade_to_exec; }
 const bool& Form::getIsSigned(void) const { return is_signed; }
 
-void Form::beSigned(const B* dude) {
-    if (is_signed)
+void Form::beSigned(const B* bureaucrat) {
+    if (is_signed) {
+        std::cerr << "Form already signed!" << std::endl;
         return ;
-    if (dude->getGrade() > grade_to_sign)
+    }
+    if (bureaucrat->getGrade() > grade_to_sign)
         throw Form::GradeTooLowException("Grade too low");
-    else if (dude->getGrade() <= grade_to_sign)
+    else if (bureaucrat->getGrade() <= grade_to_sign)
         is_signed = true;
+    std::cout << bureaucrat->getName() << " signed " << name << std::endl;
+}
+
+std::ostream& operator<<(std::ostream& os, const F& form) {
+    os << "Name: " << form.getName() << "\n"
+       << "Grade to execute: " << form.getToExecGrade() << "\n"
+       << "Grade to sign: " << form.getToSignGrade() << "\n"
+       << "Status: " << (form.getIsSigned() ? "Signed" : "Not Signed");
+    
+    return os;
 }

@@ -41,7 +41,7 @@ Bureaucrat::Bureaucrat( const B& other ) : name(other.name) {
 	grade = other.grade;
 }
 
-Bureaucrat::~Bureaucrat() { std::cout << "bye" << std::endl; }
+Bureaucrat::~Bureaucrat() {}
 
 B& Bureaucrat::operator=(const B& other) {
 	if (this == &other)
@@ -86,7 +86,7 @@ B& Bureaucrat::demote(int to_demote) {
 	return *this;
 }
 
-std::ostream& operator<<(std::ostream& os, const B& some_dude) {
-    os << some_dude.getName() << ", bureaucrat grade " << some_dude.getGrade();
+std::ostream& operator<<(std::ostream& os, const B& bureaucrat) {
+    os << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
     return os;
 }

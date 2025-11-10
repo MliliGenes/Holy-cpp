@@ -57,6 +57,6 @@ class Bureaucrat {
         B& demote(int to_demote);
 };
 
-std::ostream& operator<<(std::ostream& os, const B& some_dude);
+std::ostream& operator<<(std::ostream& os, const B& bureaucrat);
 
 #endif

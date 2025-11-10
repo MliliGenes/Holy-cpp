@@ -41,7 +41,7 @@ Bureaucrat::Bureaucrat( const B& other ) : name(other.name) {
 	grade = other.grade;
 }
 
-Bureaucrat::~Bureaucrat() { std::cout << "bye" << std::endl; }
+Bureaucrat::~Bureaucrat() {}
 
 B& Bureaucrat::operator=(const B& other) {
 	if (this == &other)
@@ -86,19 +86,18 @@ B& Bureaucrat::demote(int to_demote) {
 	return *this;
 }
 
-void Bureaucrat::signForm(F& wati9a) const {
+void Bureaucrat::signForm(F& form) const {
 	try {
-		wati9a.beSigned(this);
-		std::cout << name << " signed " << wati9a.getName() << std::endl;
+		form.beSigned(this);
 	} catch (std::exception &e) {
-		std::cout << name << " couldn't sign " << wati9a.getName()
+		std::cout << name << " couldn't sign " << form.getName()
 			<< " because " << e.what()
 			<< std::endl;
 		throw;
 	}
 }
 
-std::ostream& operator<<(std::ostream& os, const B& some_dude) {
-    os << some_dude.getName() << ", bureaucrat grade " << some_dude.getGrade();
+std::ostream& operator<<(std::ostream& os, const B& bureaucrat) {
+    os << bureaucrat.getName() << ", bureaucrat grade " << bureaucrat.getGrade();
     return os;
 }
