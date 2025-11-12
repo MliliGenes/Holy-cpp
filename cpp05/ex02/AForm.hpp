@@ -3,14 +3,13 @@
 #ifndef FORM_HPP
 #define FORM_HPP
 
-#include <string>
 #include <iostream>
 #include "Bureaucrat.hpp"
 
-class Form;
-typedef Form F;
+class AForm;
+typedef AForm F;
 
-class Form {
+class AForm {
     private:
         const string    name;
         bool            is_signed;
@@ -40,11 +39,11 @@ class Form {
                 const char* what() const throw();
         };
 
-        Form();
-        Form(const string& form_name, const int& grade_to_sign, const int& grade_to_exec);
-        ~Form();
+        AForm();
+        AForm(const string& form_name, const int& grade_to_sign, const int& grade_to_exec);
+        virtual ~AForm() = 0;
 
-        Form(const F& other);
+        AForm(const F& other);
 
         const string& getName(void)
             const;

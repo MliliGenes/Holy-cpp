@@ -6,10 +6,12 @@
 #include <string>
 #include <iostream>
 
-class Form;
+class AForm;
 class Bureaucrat;
 
 typedef std::string string;
+
+typedef AForm F;
 typedef Bureaucrat B;
 
 class Bureaucrat {
@@ -57,7 +59,7 @@ class Bureaucrat {
         B& demote(void);
         B& demote(int to_demote);
 
-        void signForm(Form& form) const;
+        void signForm(F& form) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const B& bureaucrat);
