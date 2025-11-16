@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef FORM_HPP
-#define FORM_HPP
+#ifndef AFORM_HPP
+#define AFORM_HPP
 
 #include <iostream>
 #include "Bureaucrat.hpp"
@@ -39,9 +39,20 @@ class AForm {
                 const char* what() const throw();
         };
 
-        AForm();
+        class FormNotSignedException : public std::exception {
+            private:
+                string m_message;
+
+            public:
+                FormNotSignedException(const string& msg) throw();
+                virtual ~FormNotSignedException() throw();
+                const char* what() const throw();
+        };
+
+
+        AForm(void);
         AForm(const string& form_name, const int& grade_to_sign, const int& grade_to_exec);
-        virtual ~AForm() = 0;
+        ~AForm();
 
         AForm(const F& other);
 
@@ -55,6 +66,9 @@ class AForm {
             const;
         
         void beSigned(const B* bureaucrat); // throw this shit Form::GradeTooLowException
+        void execute(Bureaucrat const & executor); // idk what this should do exactly
+
+        virtual void beExecuted() = 0;
 };
 
 std::ostream& operator<<(std::ostream& os, const F& form);

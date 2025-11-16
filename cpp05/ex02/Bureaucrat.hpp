@@ -60,6 +60,7 @@ class Bureaucrat {
         B& demote(int to_demote);
 
         void signForm(F& form) const;
+        void execForm(F& form) const;
 };
 
 std::ostream& operator<<(std::ostream& os, const B& bureaucrat);
