@@ -26,6 +26,10 @@ int main() {
     // std::cout << std::endl;
     // std::cout << std::endl;
 
+    ShrubberyCreationForm base = ShrubberyCreationForm("dawdawd");
+    AForm& a = base;
+    a.beExecuted();
+
     
     try {
         ShrubberyCreationForm form("chajara");

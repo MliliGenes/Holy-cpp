@@ -68,6 +68,7 @@ class AForm {
         void beSigned(const B* bureaucrat); // throw this shit Form::GradeTooLowException
         void execute(Bureaucrat const & executor); // idk what this should do exactly
 
+    protected:
         virtual void beExecuted() = 0;
 };
 
