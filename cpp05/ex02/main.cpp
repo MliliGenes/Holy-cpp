@@ -1,5 +1,6 @@
 #include "Bureaucrat.hpp"
 #include "AForm.hpp"
+#include "RobotomyRequestForm.hpp"
 #include "ShrubberyCreationForm.hpp"
 
 int main() {
@@ -26,22 +27,29 @@ int main() {
     // std::cout << std::endl;
     // std::cout << std::endl;
 
-    ShrubberyCreationForm base = ShrubberyCreationForm("dawdawd");
-    AForm& a = base;
-    a.beExecuted();
-
     
     try {
         ShrubberyCreationForm form("chajara");
+        RobotomyRequestForm form0("hmmm");
 
         B boutaina("boutaina", 5);
-        std::cout << boutaina << std::endl;
+        // std::cout << boutaina << std::endl;
 
         B ikram("ikram", 1);
-        std::cout << ikram << std::endl;
+        // std::cout << ikram << std::endl;
+
+        B saad("saad", 120);
+        //
+
+        saad.signForm(form0);
+        
 
         ikram.signForm(form);
         ikram.execForm(form);
+
+        ikram.signForm(form0);
+        ikram.execForm(form0);
+
 
     } catch ( std::exception& e ) {
         std::cerr << e.what() << std::endl;

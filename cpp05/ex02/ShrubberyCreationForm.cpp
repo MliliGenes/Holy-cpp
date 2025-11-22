@@ -22,6 +22,12 @@ ShrubberyCreationForm
     return *this;
 }
 
+const string&
+ShrubberyCreationForm::
+getTarget(void) const {
+    return target;
+}
+
 void
 ShrubberyCreationForm::beExecuted(void) {
     // print a fucking tree to a file i guess
@@ -30,4 +36,14 @@ ShrubberyCreationForm::beExecuted(void) {
         throw std::runtime_error("file bad trippa :(");
     outfile << TREE_ASCI;
     outfile.close();
+}
+
+std::ostream& operator<<(std::ostream& os, const Shrubbery& form) {
+    os << "Name: " << form.getName() << "\n"
+       << "Target: " << form.getTarget() << "\n"
+       << "Grade to execute: " << form.getToExecGrade() << "\n"
+       << "Grade to sign: " << form.getToSignGrade() << "\n"
+       << "Status: " << (form.getIsSigned() ? "Signed" : "Not Signed");
+    
+    return os;
 }

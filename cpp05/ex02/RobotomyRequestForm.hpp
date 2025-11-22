@@ -9,7 +9,6 @@ typedef RobotomyRequestForm Robotomy;
 class RobotomyRequestForm : public AForm {
     private:
         string target;
-
         RobotomyRequestForm();
 
     public:
@@ -27,3 +26,5 @@ class RobotomyRequestForm : public AForm {
     protected:
         void beExecuted(); //override the bitch
 };
+
+std::ostream& operator<<(std::ostream& os, const Robotomy& form);

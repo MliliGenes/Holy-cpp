@@ -64,3 +64,5 @@ class ShrubberyCreationForm : public AForm {
     protected:
         void beExecuted(); //override the bitch
 };
+
+std::ostream& operator<<(std::ostream& os, const Shrubbery& form);
