@@ -30,7 +30,10 @@ int main() {
     
     try {
         ShrubberyCreationForm form("chajara");
-        RobotomyRequestForm form0("hmmm");
+        std::cout << form << std::endl;
+        
+        RobotomyRequestForm form0("Mr roboto");
+        std::cout << form0 << std::endl;
 
         B boutaina("boutaina", 5);
         // std::cout << boutaina << std::endl;
@@ -38,11 +41,11 @@ int main() {
         B ikram("ikram", 1);
         // std::cout << ikram << std::endl;
 
-        B saad("saad", 120);
+        B saad("saad", 70);
         //
 
         saad.signForm(form0);
-        
+        saad.execForm(form0);
 
         ikram.signForm(form);
         ikram.execForm(form);

@@ -42,8 +42,8 @@ RobotomyRequestForm::beExecuted(void) {
 std::ostream& operator<<(std::ostream& os, const Robotomy& form) {
     os << "Name: " << form.getName() << "\n"
        << "Target: " << form.getTarget() << "\n"
-       << "Grade to execute: " << form.getToExecGrade() << "\n"
        << "Grade to sign: " << form.getToSignGrade() << "\n"
+       << "Grade to execute: " << form.getToExecGrade() << "\n"
        << "Status: " << (form.getIsSigned() ? "Signed" : "Not Signed");
     
     return os;

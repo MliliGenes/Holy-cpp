@@ -90,7 +90,7 @@ void AForm::execute(Bureaucrat const & executor) {
     if (executor.getGrade() > this->getToExecGrade())
         throw AForm::GradeTooLowException("Grade too low");
     beExecuted();
-    std::cout << executor << " executed " << *this << std::endl;
+    std::cout << executor.getName() << " executed " << name << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const F& form) {
