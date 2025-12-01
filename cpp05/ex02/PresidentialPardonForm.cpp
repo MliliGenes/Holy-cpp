@@ -30,7 +30,7 @@ getTarget(void) const {
 void
 PresidentialPardonForm::beExecuted(void) {
     // print a fucking tree to a file i guess
-    
+    std::cout << target << " has been pardoned by Zaphod Beeblebrox" << std::endl;
 }
 
 std::ostream& operator<<(std::ostream& os, const President& form) {
