@@ -52,7 +52,7 @@ class AForm {
 
         AForm(void);
         AForm(const string& form_name, const int& grade_to_sign, const int& grade_to_exec);
-        ~AForm();
+        virtual ~AForm();
 
         AForm(const F& other);
 
