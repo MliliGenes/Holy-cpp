@@ -1,4 +1,5 @@
 #include "RobotomyRequestForm.hpp"
+#include <cstdlib>
 
 RobotomyRequestForm::
 RobotomyRequestForm(const string& _target)
@@ -29,8 +30,8 @@ getTarget(void) const {
 
 void
 RobotomyRequestForm::beExecuted(void) {
-    std::srand(std::time(NULL));
-    int prob = std::rand() % 2;
+    srand(time(NULL));
+    int prob = rand() % 2;
     if (prob) {
         std::cout << "literally drilling noises..." << "\n"
             << target << " has been robotomized" << std::endl;
