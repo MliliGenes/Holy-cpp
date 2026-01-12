@@ -2,26 +2,19 @@
 
 #include <string>
 
-enum LiteralType {
-    TYPE_CHAR,
-    TYPE_INT,
-    TYPE_FLOAT,
-    TYPE_DOUBLE,
-    TYPE_PSEUDO,
-    TYPE_INVALID
+enum Type {
+    CHAR,
+    INT,
+    FLOAT,
+    DOUBLE,
+    INVALID
 };
+
 
 class ScalarConverter;
 
 typedef ScalarConverter Scalar;
 typedef std::string string;
-
-typedef struct scalar_s {
-    string _char;
-    string _int;
-    string _float;
-    string _double;
-} scalar_t;
 
 class ScalarConverter {
 
