@@ -1,5 +1,7 @@
 #include "Base.hpp"
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 #include "A.hpp"
 #include "B.hpp"
