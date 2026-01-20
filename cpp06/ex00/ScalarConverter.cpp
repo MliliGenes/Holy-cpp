@@ -1,7 +1,6 @@
 #include "ScalarConverter.hpp"
 #include <iostream>
 #include <iomanip>
-#include <sstream>
 #include <cstdlib>
 #include <climits>
 #include <cmath>
@@ -218,7 +217,7 @@ void ScalarConverter::convert(const string &literal) {
     if (specialType != NOT_SPECIAL) {
         charImpossible = true;
         intImpossible = true;
-        
+
         switch (specialType) {
             case NAN_F:
                 f = std::numeric_limits<float>::quiet_NaN();
@@ -257,73 +256,105 @@ void ScalarConverter::convert(const string &literal) {
                 f = static_cast<float>(c);
                 d = static_cast<double>(c);
                 break;
-                
+
             case INT:
                 i = atoi(literal.c_str());
                 c = static_cast<char>(i);
                 f = static_cast<float>(i);
                 d = static_cast<double>(i);
                 break;
-                
+
             case FLOAT:
-                f = static_cast<float>(atof(literal.c_str()));
-                
-                // Check if conversion to char/int is possible
-                if (f < CHAR_MIN || f > CHAR_MAX) {
+            {
+                errno = 0;
+                char* end = NULL;
+
+                double tmp = strtod(literal.c_str(), &end);
+
+                if (errno == ERANGE || end == literal.c_str() || *end != 'f' || *(end + 1) != '\0'
+                    || std::isinf(tmp) || std::isnan(tmp))
+                {
                     charImpossible = true;
-                }
-                if (f < INT_MIN || f > INT_MAX) {
                     intImpossible = true;
-                }
-                if (f < std::numeric_limits<float>::min() || f > std::numeric_limits<float>::max()) {
                     floatImpossible = true;
-                }
-                if (static_cast<double>(f) < std::numeric_limits<double>::min() || static_cast<double>(f) > std::numeric_limits<double>::max()) {
                     doubleImpossible = true;
+                    break;
                 }
-                
-                if (!charImpossible)
-                    c = static_cast<char>(f);
-                if (!intImpossible)
-                    i = static_cast<int>(f);
-                    
+
+                if (tmp < -std::numeric_limits<float>::max() ||
+                    tmp >  std::numeric_limits<float>::max())
+                {
+                    floatImpossible = true;
+                    doubleImpossible = true;
+                    break;
+                }
+
+                f = static_cast<float>(tmp);
                 d = static_cast<double>(f);
-                break; 
-                
-            case DOUBLE:
-                d = atof(literal.c_str());
-                
-                // Check if conversion to char/int is possible
-                if (d < CHAR_MIN || d > CHAR_MAX) {
+
+                if (f < CHAR_MIN || f > CHAR_MAX)
                     charImpossible = true;
-                }
-                if (d < INT_MIN || d > INT_MAX) {
+                else
+                    c = static_cast<char>(f);
+
+                if (f < INT_MIN || f > INT_MAX)
                     intImpossible = true;
-                }
-                if (d < std::numeric_limits<float>::min() || d > std::numeric_limits<float>::max()) {
-                    floatImpossible = true;
-                }
-                if (d < std::numeric_limits<double>::min() || d > std::numeric_limits<double>::max()) {
-                    doubleImpossible = true;
-                }
-                
-                if (!charImpossible)
-                    c = static_cast<char>(d);
-                if (!intImpossible)
-                    i = static_cast<int>(d);
-                    
-                f = static_cast<float>(d);
+                else
+                    i = static_cast<int>(f);
+
                 break;
-                
+            }
+            case DOUBLE:
+            {
+                errno = 0;
+                char* end = NULL;
+
+                double tmp = strtod(literal.c_str(), &end);
+
+                // Parsing failed or overflow
+                if (errno == ERANGE || end == literal.c_str() || *end != '\0'
+                    || std::isinf(tmp) || std::isnan(tmp))
+                {
+                    charImpossible = true;
+                    intImpossible = true;
+                    floatImpossible = true;
+                    doubleImpossible = true;
+                    break;
+                }
+
+                d = tmp;
+
+                // char
+                if (d < CHAR_MIN || d > CHAR_MAX)
+                    charImpossible = true;
+                else
+                    c = static_cast<char>(d);
+
+                // int
+                if (d < INT_MIN || d > INT_MAX)
+                    intImpossible = true;
+                else
+                    i = static_cast<int>(d);
+
+                // float
+                if (d < -std::numeric_limits<float>::max() ||
+                    d >  std::numeric_limits<float>::max())
+                    floatImpossible = true;
+                else
+                    f = static_cast<float>(d);
+
+                break;
+            }
+
             default:
                 break;
         }
     }
-    
+
     // Check if char is displayable (only if not already impossible)
     if (!charImpossible && (c < 32 || c > 126))
         charNonDisplayable = true;
-    
+
     // Print results
     printChar(c, charImpossible, charNonDisplayable);
     printInt(i, intImpossible);
