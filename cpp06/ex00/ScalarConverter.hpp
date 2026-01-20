@@ -7,9 +7,19 @@ enum Type {
     INT,
     FLOAT,
     DOUBLE,
+    SPECIAL,
     INVALID
 };
 
+enum SpecialType {
+    NOT_SPECIAL,
+    NAN_F,
+    POS_INF_F,
+    NEG_INF_F,
+    NAN_D,
+    POS_INF_D,
+    NEG_INF_D
+};
 
 class ScalarConverter;
 

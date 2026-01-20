@@ -17,6 +17,16 @@ ScalarConverter& ScalarConverter::operator=(const ScalarConverter &other) {
     return *this; 
 }
 
+static SpecialType getSpecialType(const string &literal) {
+    if (literal == "nanf") return NAN_F;
+    if (literal == "+inff" || literal == "inff") return POS_INF_F;
+    if (literal == "-inff") return NEG_INF_F;
+    if (literal == "nan") return NAN_D;
+    if (literal == "+inf" || literal == "inf") return POS_INF_D;
+    if (literal == "-inf") return NEG_INF_D;
+    return NOT_SPECIAL;
+}
+
 static bool isChar(const string &literal) {
     return literal.length() == 1 && !isdigit(literal[0]);
 }
@@ -47,8 +57,10 @@ static bool isInt(const string &literal) {
 static bool isFloat(const string &literal) {
     if (literal.empty()) return false;
     
-    // Special cases
-    if (literal == "nan" || literal == "+inf" || literal == "-inf" || literal == "inf")
+    // Check for special values first
+    if (getSpecialType(literal) == NAN_F || 
+        getSpecialType(literal) == POS_INF_F || 
+        getSpecialType(literal) == NEG_INF_F)
         return true;
     
     if (literal[literal.length() - 1] != 'f')
@@ -85,8 +97,10 @@ static bool isFloat(const string &literal) {
 static bool isDouble(const string &literal) {
     if (literal.empty()) return false;
     
-    // Special cases
-    if (literal == "nan" || literal == "+inf" || literal == "-inf" || literal == "inf")
+    // Check for special values first
+    if (getSpecialType(literal) == NAN_D || 
+        getSpecialType(literal) == POS_INF_D || 
+        getSpecialType(literal) == NEG_INF_D)
         return true;
     
     size_t i = 0;
@@ -142,9 +156,11 @@ static void printInt(int i, bool impossible) {
     std::cout << std::endl;
 }
 
-static void printFloat(float f) {
+static void printFloat(float f, bool impossible) {
     std::cout << "float: ";
-    if (std::isnan(f))
+    if (impossible)
+        std::cout << "impossible";
+    else if (std::isnan(f))
         std::cout << "nanf";
     else if (std::isinf(f)) {
         if (f > 0)
@@ -157,9 +173,11 @@ static void printFloat(float f) {
     std::cout << std::endl;
 }
 
-static void printDouble(double d) {
+static void printDouble(double d, bool impossible) {
     std::cout << "double: ";
-    if (std::isnan(d))
+    if (impossible)
+        std::cout << "impossible";
+    else if (std::isnan(d))
         std::cout << "nan";
     else if (std::isinf(d)) {
         if (d > 0)
@@ -183,6 +201,8 @@ void ScalarConverter::convert(const string &literal) {
         return;
     }
     
+    SpecialType specialType = getSpecialType(literal);
+    
     char c = 0;
     int i = 0;
     float f = 0.0f;
@@ -190,79 +210,123 @@ void ScalarConverter::convert(const string &literal) {
     
     bool charImpossible = false;
     bool intImpossible = false;
+    bool floatImpossible = false;
+    bool doubleImpossible = false;
     bool charNonDisplayable = false;
     
-    // Convert based on detected type
-    switch (type) {
-        case CHAR:
-            c = literal[0];
-            i = static_cast<int>(c);
-            f = static_cast<float>(c);
-            d = static_cast<double>(c);
-            break;
-            
-        case INT:
-            i = atoi(literal.c_str());
-            c = static_cast<char>(i);
-            f = static_cast<float>(i);
-            d = static_cast<double>(i);
-            break;
-            
-        case FLOAT:
-            // Handle special float values
-            if (literal == "nan") {
+    // Handle special values
+    if (specialType != NOT_SPECIAL) {
+        charImpossible = true;
+        intImpossible = true;
+        
+        switch (specialType) {
+            case NAN_F:
                 f = std::numeric_limits<float>::quiet_NaN();
-            } else if (literal == "+inf" || literal == "inf") {
+                d = static_cast<double>(f);
+                break;
+            case POS_INF_F:
                 f = std::numeric_limits<float>::infinity();
-            } else if (literal == "-inf") {
+                d = static_cast<double>(f);
+                break;
+            case NEG_INF_F:
                 f = -std::numeric_limits<float>::infinity();
-            } else {
-                f = static_cast<float>(atof(literal.c_str()));
-            }
-            
-            if (std::isnan(f) || std::isinf(f)) {
-                charImpossible = true;
-                intImpossible = true;
-            } else {
-                i = static_cast<int>(f);
-                c = static_cast<char>(f);
-            }
-            d = static_cast<double>(f);
-            break; 
-            
-        case DOUBLE:
-            // Handle special double values
-            if (literal == "nan") {
+                d = static_cast<double>(f);
+                break;
+            case NAN_D:
                 d = std::numeric_limits<double>::quiet_NaN();
-            } else if (literal == "+inf" || literal == "inf") {
-                d = std::numeric_limits<double>::infinity();
-            } else if (literal == "-inf") {
-                d = -std::numeric_limits<double>::infinity();
-            } else {
-                d = atof(literal.c_str());
-            }
-            
-            if (std::isnan(d) || std::isinf(d)) {
-                charImpossible = true;
-                intImpossible = true;
-            } else {
-                i = static_cast<int>(d);
-                c = static_cast<char>(d);
                 f = static_cast<float>(d);
-            }
-            break;
-            
-        default:
-            break;
+                break;
+            case POS_INF_D:
+                d = std::numeric_limits<double>::infinity();
+                f = static_cast<float>(d);
+                break;
+            case NEG_INF_D:
+                d = -std::numeric_limits<double>::infinity();
+                f = static_cast<float>(d);
+                break;
+            default:
+                break;
+        }
+    }
+    // Handle regular values
+    else {
+        switch (type) {
+            case CHAR:
+                c = literal[0];
+                i = static_cast<int>(c);
+                f = static_cast<float>(c);
+                d = static_cast<double>(c);
+                break;
+                
+            case INT:
+                i = atoi(literal.c_str());
+                c = static_cast<char>(i);
+                f = static_cast<float>(i);
+                d = static_cast<double>(i);
+                break;
+                
+            case FLOAT:
+                f = static_cast<float>(atof(literal.c_str()));
+                
+                // Check if conversion to char/int is possible
+                if (f < CHAR_MIN || f > CHAR_MAX) {
+                    charImpossible = true;
+                }
+                if (f < INT_MIN || f > INT_MAX) {
+                    intImpossible = true;
+                }
+                if (f < std::numeric_limits<float>::min() || f > std::numeric_limits<float>::max()) {
+                    floatImpossible = true;
+                }
+                if (static_cast<double>(f) < std::numeric_limits<double>::min() || static_cast<double>(f) > std::numeric_limits<double>::max()) {
+                    doubleImpossible = true;
+                }
+                
+                if (!charImpossible)
+                    c = static_cast<char>(f);
+                if (!intImpossible)
+                    i = static_cast<int>(f);
+                    
+                d = static_cast<double>(f);
+                break; 
+                
+            case DOUBLE:
+                d = atof(literal.c_str());
+                
+                // Check if conversion to char/int is possible
+                if (d < CHAR_MIN || d > CHAR_MAX) {
+                    charImpossible = true;
+                }
+                if (d < INT_MIN || d > INT_MAX) {
+                    intImpossible = true;
+                }
+                if (d < std::numeric_limits<float>::min() || d > std::numeric_limits<float>::max()) {
+                    floatImpossible = true;
+                }
+                if (d < std::numeric_limits<double>::min() || d > std::numeric_limits<double>::max()) {
+                    doubleImpossible = true;
+                }
+                
+                if (!charImpossible)
+                    c = static_cast<char>(d);
+                if (!intImpossible)
+                    i = static_cast<int>(d);
+                    
+                f = static_cast<float>(d);
+                break;
+                
+            default:
+                break;
+        }
     }
     
-    // Check if char is displayable
+    // Check if char is displayable (only if not already impossible)
     if (!charImpossible && (c < 32 || c > 126))
         charNonDisplayable = true;
     
     // Print results
     printChar(c, charImpossible, charNonDisplayable);
     printInt(i, intImpossible);
-    printFloat(f);
-    printDouble(d);
+    printFloat(f, floatImpossible);
+    printDouble(d, doubleImpossible);
 }
