@@ -22,7 +22,7 @@ all: $(NAME)
 
 $(NAME): $(OBJECTS)
 	@echo "$(BLUE)Linking $(NAME)...$(NC)"
-	@$(CXX) $(OBJECTS) -o $(NAME)
+	@$(CXX) $(CXXFLAGS) $(OBJECTS) -o $(NAME)
 	@echo "$(GREEN)✓ $(NAME) compiled successfully!$(NC)"
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.cpp $(HEADERS) | $(OBJDIR)
