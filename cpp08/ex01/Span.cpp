@@ -31,7 +31,7 @@ void Span::addNumberRange(int start, int end) {
     if (start >= end)
         throw std::out_of_range("end should be strictly bigger than start");
 
-    unsigned int range_size = end - start + 1;
+    unsigned int range_size = static_cast<unsigned int>(end - start + 1);;
     if (idx + range_size > cap)
         throw std::out_of_range("Span will exceed its capacity");
 
@@ -49,7 +49,7 @@ unsigned int Span::shortestSpan() const {
     std::sort(sortedVec.begin(), sortedVec.end());
 
     unsigned int minSpan = UINT_MAX;
-    for (size_t i = 1; i < idx; i++) {
+    for (size_t i = 1; i < sortedVec.size(); i++) {
         unsigned int span = sortedVec[i] - sortedVec[i - 1];
         if (span < minSpan)
             minSpan = span;
