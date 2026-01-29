@@ -49,7 +49,7 @@ unsigned int Span::shortestSpan() const {
     std::sort(sortedVec.begin(), sortedVec.end());
 
     unsigned int minSpan = UINT_MAX;
-    for (size_t i = 1; i < sortedVec.size(); i++) {
+    for (size_t i = 1; i < idx; i++) {
         unsigned int span = sortedVec[i] - sortedVec[i - 1];
         if (span < minSpan)
             minSpan = span;
