@@ -2,8 +2,6 @@
 #include <deque>
 #include <iostream>
 #include <list>
-#include <queue>
-#include <stack>
 #include <vector>
 
 int main() {
