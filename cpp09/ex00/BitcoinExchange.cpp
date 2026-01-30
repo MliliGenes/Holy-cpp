@@ -99,7 +99,7 @@ bool BitcoinExchange::parseDatabase(const string& file) {
         if (!addEntry(date, value))
             return false;
     }
-
+    db_file.close();
     return true;
 }
 
@@ -143,6 +143,7 @@ void BitcoinExchange::processInputFile(const string& _input) {
             continue;
         processInputLine(line);
     }
+    input_file.close();
 }
 
 
@@ -179,6 +180,11 @@ void BitcoinExchange::processInputLine(const string& line) const {
     }
 
     map_data::const_iterator it = get_targeted_date(date);
+    if (it == _database.end()) {
+        std::cerr << "Error: date is too early (before database start)." << std::endl;
+        return;
+    }
+
     std::cout << it->first << " => " << numiric_value << " = " << it->second * numiric_value << std::endl;
 }
 
