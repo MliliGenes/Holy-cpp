@@ -9,7 +9,6 @@ typedef std::map<string, double> map_data;
 class BitcoinExchange {
     private:
         map_data _database;
-        map_data _output;
 
     public:
         BitcoinExchange();
@@ -36,8 +35,9 @@ class BitcoinExchange {
             string& value);
 
         // idk what i should do here
-        bool parseinput(const string& file);
-        bool parseInputLine(const string& line,
-            string& date,
-            string& value);
+        void processInputLine(const string& line) const;
+        map_data::const_iterator get_targeted_date(const string& target_date) const;
 };
+
+
+// kill yourself you fucking retard do not ask for help

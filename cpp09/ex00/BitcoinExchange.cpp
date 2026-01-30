@@ -25,13 +25,6 @@ bool BitcoinExchange::init(const string& _db) {
     return parseDatabase(_db);
 }
 
-void BitcoinExchange::processInputFile(const string& _input) {
-    std::ifstream input_file(_input.c_str());
-    if (!input_file.is_open()) {
-        std::cerr << "" << std::endl;
-    }
-}
-
 map_data BitcoinExchange::get() const {
     return _database;
 }
@@ -133,4 +126,72 @@ bool BitcoinExchange::addEntry(const string& date, const string& value) {
 
     _database[date] = rate;
     return true;
+}
+
+void BitcoinExchange::processInputFile(const string& _input) {
+    std::ifstream input_file(_input.c_str());
+    if (!input_file.is_open()) {
+        std::cerr << "Error: can't open the input file." << std::endl;
+        return;
+    }
+
+    string line;
+    std::getline(input_file, line);
+
+    while (std::getline(input_file, line)) {
+        if (line.empty())
+            continue;
+        processInputLine(line);
+    }
+}
+
+
+void BitcoinExchange::processInputLine(const string& line) const {
+    size_t pipe_pose = line.find("|");
+    if (pipe_pose == string::npos) {
+        std::cerr << "Error: line not formatted properly." << std::endl;
+        return;
+    }
+
+    double numiric_value;
+
+    string date = trim(line.substr(0, pipe_pose));
+    std::istringstream iss(trim(line.substr(pipe_pose + 1)));
+
+    if (!(iss >> numiric_value)) {
+        std::cerr << "Error: failed to convert from string to double." << std::endl;
+        return;
+    }
+
+    if (numiric_value < 0) {
+        std::cerr << "Error: not a positive number." << std::endl;
+        return;
+    }
+
+    if (numiric_value > 1000) {
+        std::cerr << "Error: too large a number." << std::endl;
+        return;
+    }
+
+    if (!isValidDate(date)) {
+        std::cerr << "Error: bad input => " << date << std::endl;
+        return;
+    }
+
+    map_data::const_iterator it = get_targeted_date(date);
+    std::cout << it->first << " => " << numiric_value << " = " << it->second * numiric_value << std::endl;
+}
+
+map_data::const_iterator BitcoinExchange::get_targeted_date(const string& target_date) const {
+    map_data::const_iterator it = _database.lower_bound(target_date);
+    if (it != _database.end() && it->first == target_date) {
+        return it;
+    }
+
+    if (it == _database.begin()) {
+        return _database.end();
+    }
+    
+     --it;
+    return it;
 }

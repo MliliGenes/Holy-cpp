@@ -11,11 +11,13 @@ int main(int ac, char **av) {
     if (!btc.init("data.csv")) {
         return 1;
     }
+    
+    {
+        // map_data data = btc.get();
+        // for (map_data::iterator it = data.begin(); it != data.end(); it++)
+        //     std::cout << it->first << "," << it->second << std::endl;   
+    }
 
-    map_data data = btc.get();
-    for (map_data::iterator it = data.begin(); it != data.end(); it++)
-        std::cout << it->first << "," << it->second << std::endl;
-
-    btc.
+    btc.processInputFile(av[1]);
     return 0;
 }
