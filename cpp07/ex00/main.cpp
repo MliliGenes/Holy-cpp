@@ -1,6 +1,12 @@
 #include "whatever.hpp"
 #include <iostream>
 
+void swap(int& a, int& b) {
+    int tmp = a;
+    a = b;
+    b = tmp;
+}
+
 int main() {
     float a = 2;
     float b = 3;
