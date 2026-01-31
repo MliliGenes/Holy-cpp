@@ -49,7 +49,6 @@ int main(int ac, char **av) {
         RPN rpn;
         rpn.setFormatStr(tests[i].input);
 
-        // Capture stdout
         std::streambuf* old = std::cout.rdbuf();
         std::ostringstream stream;
         std::cout.rdbuf(stream.rdbuf());
