@@ -3,13 +3,13 @@
 #include <stack>
 #include <string>
 
-typedef std::stack<char> stackint;
+typedef std::stack<int> stackint;
 typedef std::string string;
 
 class RPN {
 
     private:
-        string foramt_str;
+        string format_str;
         size_t index;
 
         stackint stack_int;
@@ -24,8 +24,9 @@ class RPN {
         void setFormatStr(const string& str);
         const string& getFormatStr(void) const;
 
-        void eval(void) const;
+        void eval(void);
+        int get_next_char(void);
 
-        char get_next_char(void);
+    private:
         bool validate(void);
 };
