@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Ford-Johnson Algorithm Explained</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #475569;
+            --highlight: #f59e0b;
+            --bg-light: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #334155;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #ffffff;
+        }
+
+        h1 {
+            color: #1e293b;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 1rem;
+        }
+
+        h2 {
+            color: #1e293b;
+            margin-top: 2.5rem;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: var(--secondary);
+            margin-top: 1.5rem;
+        }
+
+        .goal-box {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Visualization Styles */
+        .array-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .pair {
+            display: flex;
+            flex-direction: column;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            overflow: hidden;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .pair div {
+            padding: 5px;
+        }
+
+        .pair .top {
+            background-color: #e2e8f0;
+            border-bottom: 1px solid #cbd5e1;
+            font-size: 0.9em;
+            color: #64748b;
+        }
+
+        .pair .bottom {
+            background-color: #fff;
+            font-weight: bold;
+        }
+
+        .pair.sorted .top {
+            background-color: #dcfce7; /* Green tint for smaller */
+            color: #166534;
+        }
+        
+        .pair.sorted .bottom {
+            background-color: #dbeafe; /* Blue tint for larger */
+            color: #1e40af;
+        }
+
+        .chain-node {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 5px;
+            position: relative;
+        }
+
+        .chain-wrapper {
+            display: flex;
+            align-items: center;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .arrow {
+            margin: 0 5px;
+            color: #94a3b8;
+        }
+
+        .pend-node {
+            background-color: var(--highlight);
+        }
+
+        .straggler {
+            border: 2px dashed #94a3b8;
+            padding: 5px 10px;
+            border-radius: 4px;
+            background: #f1f5f9;
+        }
+
+        code {
+            background-color: #f1f5f9;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #d946ef;
+        }
+
+        .note {
+            font-size: 0.9rem;
+            color: #64748b;
+            font-style: italic;
+            margin-top: 0.5rem;
+        }
+
+        .math-block {
+            background: #fafafa;
+            padding: 1rem;
+            border-left: 3px solid var(--highlight);
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>The Ford-Johnson Algorithm</h1>
+    
+    <div class="goal-box">
+        <strong>🎯 Goal:</strong> Sort a collection of numbers while strictly minimizing the number of comparisons performed.
+    </div>
+
+    <p>The Ford-Johnson algorithm (Merge-Insertion Sort) is an optimal sorting algorithm designed to perform the fewest possible comparisons. This is highly efficient when comparison operations are computationally expensive.</p>
+
+    <hr>
+
+    <h2>Step 1: Create Pairs</h2>
+    <p>Take the input list and group elements into pairs. Within each pair, sort them so the smaller number comes first (shown on top in visual).</p>
+    
+    <p><strong>Input:</strong> <code>[23, 10, 10, 97, 42, 32, 40, 84, 29, 26, 66, 96, 57, 13, 46, 30, 91, 48, 11]</code></p>
+
+    <h3>1. Group & Sort Pairs</h3>
+    <div class="array-container">
+        <div class="pair sorted"><div class="top">10</div><div class="bottom">23</div></div>
+        <div class="pair sorted"><div class="top">10</div><div class="bottom">97</div></div>
+        <div class="pair sorted"><div class="top">32</div><div class="bottom">42</div></div>
+        <div class="pair sorted"><div class="top">40</div><div class="bottom">84</div></div>
+        <div class="pair sorted"><div class="top">26</div><div class="bottom">29</div></div>
+        <div class="pair sorted"><div class="top">66</div><div class="bottom">96</div></div>
+        <div class="pair sorted"><div class="top">13</div><div class="bottom">57</div></div>
+        <div class="pair sorted"><div class="top">30</div><div class="bottom">46</div></div>
+        <div class="pair sorted"><div class="top">48</div><div class="bottom">91</div></div>
+        
+        <div class="straggler">Straggler: 11</div>
+    </div>
+    <p class="note">Note: The top number is the "Small" element, the bottom is the "Large" element.</p>
+
+    <hr>
+
+    <h2>Step 2: Sort the Pairs by Larger Values</h2>
+    <p>We recursively sort the list of pairs based <strong>only</strong> on their larger (bottom) elements.</p>
+
+    <h3>Sorted by Larger Element (Bottom Row):</h3>
+    <div class="array-container">
+        <div class="pair sorted"><div class="top">10</div><div class="bottom">23</div></div>
+        <div class="pair sorted"><div class="top">26</div><div class="bottom">29</div></div>
+        <div class="pair sorted"><div class="top">32</div><div class="bottom">42</div></div>
+        <div class="pair sorted"><div class="top">30</div><div class="bottom">46</div></div>
+        <div class="pair sorted"><div class="top">13</div><div class="bottom">57</div></div>
+        <div class="pair sorted"><div class="top">40</div><div class="bottom">84</div></div>
+        <div class="pair sorted"><div class="top">48</div><div class="bottom">91</div></div>
+        <div class="pair sorted"><div class="top">66</div><div class="bottom">96</div></div>
+        <div class="pair sorted"><div class="top">10</div><div class="bottom">97</div></div>
+    </div>
+    <p><em>Notice the bottom row is now perfectly sorted: 23, 29, 42, 46, 57, 84, 91, 96, 97.</em></p>
+
+    <hr>
+
+    <h2>Step 3: Build the Main Chain</h2>
+    <p>We separate the elements into two groups:</p>
+    <ol>
+        <li><strong>Main Chain:</strong> Includes the first element of the first pair (it's the absolute smallest), plus all the "Larger" elements.</li>
+        <li><strong>Pending:</strong> The remaining "Smaller" elements that need to be inserted.</li>
+    </ol>
+
+    <h3>Main Chain (Sorted Backbone)</h3>
+    <div class="chain-wrapper">
+        <div class="chain-node">10</div><span class="arrow">→</span>
+        <div class="chain-node">23</div><span class="arrow">→</span>
+        <div class="chain-node">29</div><span class="arrow">→</span>
+        <div class="chain-node">42</div><span class="arrow">→</span>
+        <div class="chain-node">46</div><span class="arrow">→</span>
+        <div class="chain-node">57</div><span class="arrow">→</span>
+        <div class="chain-node">84</div><span class="arrow">→</span>
+        <div class="chain-node">91</div><span class="arrow">→</span>
+        <div class="chain-node">96</div><span class="arrow">→</span>
+        <div class="chain-node">97</div>
+    </div>
+
+    <h3>Pending Elements (To be inserted)</h3>
+    <div class="chain-wrapper">
+        <div class="chain-node pend-node">26</div>
+        <div class="chain-node pend-node">32</div>
+        <div class="chain-node pend-node">30</div>
+        <div class="chain-node pend-node">13</div>
+        <div class="chain-node pend-node">40</div>
+        <div class="chain-node pend-node">48</div>
+        <div class="chain-node pend-node">66</div>
+        <div class="chain-node pend-node">10</div>
+    </div>
+    <p class="note">Yellow nodes are waiting to be inserted into the blue Main Chain.</p>
+
+    <hr>
+
+    <h2>Step 4: Determine Order (Jacobsthal Sequence)</h2>
+    <p>To minimize comparisons, we insert pending elements in a specific order defined by the Jacobsthal sequence.</p>
+
+    <div class="math-block">
+        J(0) = 0<br>
+        J(1) = 1<br>
+        J(n) = J(n-1) + 2 × J(n-2)<br>
+        <br>
+        Sequence: 0, 1, 1, 3, 5, 11, 21...
+    </div>
+
+    <p>We use this sequence to determine which index to pick next from the pending list.</p>
+
+    <hr>
+
+    <h2>Step 5: The Insertion Process</h2>
+    <p>We insert elements from Pending into the Main Chain using <strong>Binary Search</strong>.</p>
+    
+    <div class="goal-box">
+        <strong>Key Insight:</strong> When inserting a pending number, we know it is smaller than its original partner in the Main Chain. We only binary search the area <em>before</em> that partner.
+    </div>
+
+    <h3>Round 1 (Jacobsthal Index 1)</h3>
+    <ul>
+        <li>Insert <strong>32</strong>: Partner is 42. Search range: <code>[10...42]</code>.</li>
+        <li>Insert <strong>26</strong>: Partner is 29. Search range: <code>[10...29]</code>.</li>
+    </ul>
+
+    <h3>Round 2 (Jacobsthal Index 3)</h3>
+    <ul>
+        <li>Insert <strong>13</strong>: Partner is 57. Search range: <code>[10...46]</code>.</li>
+        <li>Insert <strong>30</strong>: Partner is 46. Search range: <code>[10...42]</code>.</li>
+    </ul>
+
+    <hr>
+
+    <h2>Step 6: Final Result</h2>
+    <p>After inserting all pending elements and the straggler (11), we get the fully sorted list:</p>
+
+    <div class="chain-wrapper" style="flex-wrap: wrap;">
+        <div class="chain-node">10</div>
+        <div class="chain-node">11</div>
+        <div class="chain-node">13</div>
+        <div class="chain-node">23</div>
+        <div class="chain-node">26</div>
+        <div class="chain-node">29</div>
+        <div class="chain-node">30</div>
+        <div class="chain-node">32</div>
+        <div class="chain-node">40</div>
+        <div class="chain-node">42</div>
+        <div class="chain-node">46</div>
+        <div class="chain-node">48</div>
+        <div class="chain-node">57</div>
+        <div class="chain-node">66</div>
+        <div class="chain-node">84</div>
+        <div class="chain-node">91</div>
+        <div class="chain-node">96</div>
+        <div class="chain-node">97</div>
+    </div>
+
+    <hr>
+
+    <h2>Summary Checklist</h2>
+    <ul>
+        <li>✅ <strong>Pair & Sort:</strong> Group inputs and sort pairs internally.</li>
+        <li>✅ <strong>Recursion:</strong> Sort the pairs based on their larger elements.</li>
+        <li>✅ <strong>Main Chain:</strong> Create the backbone using the larger elements.</li>
+        <li>✅ <strong>Jacobsthal:</strong> Calculate the specific insertion order.</li>
+        <li>✅ <strong>Binary Insert:</strong> Insert pending elements using their pairs as upper boundaries.</li>
+    </ul>
+
+</body>
+</html>
