@@ -51,12 +51,14 @@ class PmergeMe {
         
         // Step 3: Build main chain and pend
         void buildChainsVector(const std::vector<std::pair<int, int> >& pairs,
-                            std::vector<int>& mainChain,
-                            std::vector<int>& pend);
+                    std::vector<int>& mainChain,
+                    std::vector<int>& pend,
+                    std::vector<size_t>& pendPairedPos);
         
         // Step 4: Insert pend elements using Jacobsthal order
         void insertPendVector(std::vector<int>& mainChain,
-                            const std::vector<int>& pend);
+                    const std::vector<int>& pend,
+                    const std::vector<size_t>& pendPairedPos);
         
         // Binary insertion helper
         void binaryInsertVector(std::vector<int>& mainChain,
