@@ -5,6 +5,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
+#include <typeinfo>
 
 Base* generate(void) {    
     int random = std::rand() % 3;

@@ -90,7 +90,7 @@ static bool isFloat(const string &literal) {
         }
     }
     
-    return hasDot && hasDigitBeforeDot && hasDigitAfterDot;
+    return hasDot && (hasDigitBeforeDot || hasDigitAfterDot);
 }
 
 static bool isDouble(const string &literal) {
@@ -124,7 +124,7 @@ static bool isDouble(const string &literal) {
         }
     }
     
-    return hasDot && hasDigitBeforeDot && hasDigitAfterDot;
+    return hasDot && (hasDigitBeforeDot || hasDigitAfterDot);
 }
 
 static Type detectType(const string &literal) {
