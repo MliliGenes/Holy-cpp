@@ -279,12 +279,18 @@ void PmergeMe::insertPendVector(std::vector<int>& mainChain,
     
     // Step 1: Insert pend[0] first
     // pend[0]'s partner is at pairedPos[0]
-    binaryInsertVector(mainChain, pend[0], 0, pairedPos[0] + 1);
+    size_t insertPos = 0;
+    while (insertPos < pairedPos[0] + 1 && insertPos < mainChain.size()) {
+        if (pend[0] < mainChain[insertPos])
+            break;
+        insertPos++;
+    }
+    mainChain.insert(mainChain.begin() + insertPos, pend[0]);
     inserted[0] = true;
     
     // Update all paired positions after this insertion
     for (size_t i = 1; i < pairedPos.size(); i++) {
-        if (pairedPos[i] >= pairedPos[0])
+        if (pairedPos[i] >= insertPos)
             pairedPos[i]++;  // Shift right because we inserted before it
     }
     
@@ -300,12 +306,22 @@ void PmergeMe::insertPendVector(std::vector<int>& mainChain,
         for (size_t j = currentIndex; j > prevIndex; j--) {
             if (j < pend.size() && !inserted[j]) {
                 // Use the tracked paired position!
-                binaryInsertVector(mainChain, pend[j], 0, pairedPos[j] + 1);
+                insertPos = 0;
+                size_t searchLimit = pairedPos[j] + 1;
+                if (searchLimit > mainChain.size())
+                    searchLimit = mainChain.size();
+                
+                while (insertPos < searchLimit) {
+                    if (pend[j] < mainChain[insertPos])
+                        break;
+                    insertPos++;
+                }
+                mainChain.insert(mainChain.begin() + insertPos, pend[j]);
                 inserted[j] = true;
                 
                 // Update positions for remaining elements
                 for (size_t k = 0; k < pairedPos.size(); k++) {
-                    if (!inserted[k] && pairedPos[k] >= pairedPos[j])
+                    if (!inserted[k] && pairedPos[k] >= insertPos)
                         pairedPos[k]++;
                 }
             }
@@ -317,7 +333,24 @@ void PmergeMe::insertPendVector(std::vector<int>& mainChain,
     // Step 3: Insert any remaining
     for (size_t i = 0; i < pend.size(); i++) {
         if (!inserted[i]) {
-            binaryInsertVector(mainChain, pend[i], 0, pairedPos[i] + 1);
+            insertPos = 0;
+            size_t searchLimit = pairedPos[i] + 1;
+            if (searchLimit > mainChain.size())
+                searchLimit = mainChain.size();
+            
+            while (insertPos < searchLimit) {
+                if (pend[i] < mainChain[insertPos])
+                    break;
+                insertPos++;
+            }
+            mainChain.insert(mainChain.begin() + insertPos, pend[i]);
+            inserted[i] = true;
+            
+            // Update positions for remaining elements
+            for (size_t k = i + 1; k < pairedPos.size(); k++) {
+                if (!inserted[k] && pairedPos[k] >= insertPos)
+                    pairedPos[k]++;
+            }
         }
     }
 }
@@ -414,12 +447,18 @@ void PmergeMe::insertPendDeque(std::deque<int>& mainChain,
     std::vector<size_t> pairedPos = pendPairedPos; // Copy to track updates
     
     // Step 1: Insert pend[0] first
-    binaryInsertDeque(mainChain, pend[0], 0, pairedPos[0] + 1);
+    size_t insertPos = 0;
+    while (insertPos < pairedPos[0] + 1 && insertPos < mainChain.size()) {
+        if (pend[0] < mainChain[insertPos])
+            break;
+        insertPos++;
+    }
+    mainChain.insert(mainChain.begin() + insertPos, pend[0]);
     inserted[0] = true;
     
     // Update all paired positions after this insertion
     for (size_t i = 1; i < pairedPos.size(); i++) {
-        if (pairedPos[i] >= pairedPos[0])
+        if (pairedPos[i] >= insertPos)
             pairedPos[i]++;  // Shift right because we inserted before it
     }
     
@@ -435,12 +474,22 @@ void PmergeMe::insertPendDeque(std::deque<int>& mainChain,
         for (size_t j = currentIndex; j > prevIndex; j--) {
             if (j < pend.size() && !inserted[j]) {
                 // Use the tracked paired position!
-                binaryInsertDeque(mainChain, pend[j], 0, pairedPos[j] + 1);
+                insertPos = 0;
+                size_t searchLimit = pairedPos[j] + 1;
+                if (searchLimit > mainChain.size())
+                    searchLimit = mainChain.size();
+                
+                while (insertPos < searchLimit) {
+                    if (pend[j] < mainChain[insertPos])
+                        break;
+                    insertPos++;
+                }
+                mainChain.insert(mainChain.begin() + insertPos, pend[j]);
                 inserted[j] = true;
                 
                 // Update positions for remaining elements
                 for (size_t k = 0; k < pairedPos.size(); k++) {
-                    if (!inserted[k] && pairedPos[k] >= pairedPos[j])
+                    if (!inserted[k] && pairedPos[k] >= insertPos)
                         pairedPos[k]++;
                 }
             }
@@ -452,7 +501,24 @@ void PmergeMe::insertPendDeque(std::deque<int>& mainChain,
     // Step 3: Insert any remaining
     for (size_t i = 0; i < pend.size(); i++) {
         if (!inserted[i]) {
-            binaryInsertDeque(mainChain, pend[i], 0, pairedPos[i] + 1);
+            insertPos = 0;
+            size_t searchLimit = pairedPos[i] + 1;
+            if (searchLimit > mainChain.size())
+                searchLimit = mainChain.size();
+            
+            while (insertPos < searchLimit) {
+                if (pend[i] < mainChain[insertPos])
+                    break;
+                insertPos++;
+            }
+            mainChain.insert(mainChain.begin() + insertPos, pend[i]);
+            inserted[i] = true;
+            
+            // Update positions for remaining elements
+            for (size_t k = i + 1; k < pairedPos.size(); k++) {
+                if (!inserted[k] && pairedPos[k] >= insertPos)
+                    pairedPos[k]++;
+            }
         }
     }
 }
