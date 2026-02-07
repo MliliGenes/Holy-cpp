@@ -185,7 +185,7 @@ bool PmergeMe::parseArguments(int argc, char** argv) {
 
         if (seen.find(value) != seen.end()) {
             std::cerr << "Error: Duplicate number found: " << value << std::endl;
-            return false;
+            // return false;
         }
         seen.insert(value);
 
