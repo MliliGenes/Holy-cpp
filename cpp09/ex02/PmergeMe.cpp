@@ -50,19 +50,19 @@ size_t PmergeMe::jacobsthal(size_t n) {
 }
 
 std::vector<size_t> PmergeMe::generateJacobsthalSequence(size_t size) {
-    std::vector<size_t> sequence;
-    
-    size_t index = 3;
-    
-    while (true) {
-        size_t jacob = jacobsthal(index);
-        if (jacob >= size)
-            break;
-        sequence.push_back(jacob);
-        index++;
+    std::vector<size_t> seq;
+
+    size_t j0 = 1;
+    size_t j1 = 1;
+
+    while (j1 < size) {
+        seq.push_back(j1);
+        size_t next = j1 + 2 * j0;
+        j0 = j1;
+        j1 = next;
     }
-    
-    return sequence;
+
+    return seq;
 }
 
 PmergeMe::PmergeMe() : vecTime(0), deqTime(0) {}
@@ -158,7 +158,7 @@ bool PmergeMe::parseArguments(int argc, char** argv) {
         
         // Validate format
         if (!isValidNumber(arg)) {
-            std::cerr << "Error" << std::endl;
+            std::cerr << "Error: Invalid number format: '" << arg << "'" << std::endl;
             return false;
         }
         
@@ -167,19 +167,24 @@ bool PmergeMe::parseArguments(int argc, char** argv) {
         ss >> number;
         
         if (ss.fail()) {
-            std::cerr << "Error" << std::endl;
+            std::cerr << "Error: Failed to parse number: '" << arg << "'" << std::endl;
             return false;
         }
         
-        if (number < 0 || number > 2147483647) { // INT_MAX
-            std::cerr << "Error" << std::endl;
+        if (number < 0) {
+            std::cerr << "Error: Negative numbers are not allowed: " << number << std::endl;
+            return false;
+        }
+        
+        if (number > 2147483647) { // INT_MAX
+            std::cerr << "Error: Number too large (max 2147483647): " << number << std::endl;
             return false;
         }
         
         int value = static_cast<int>(number);
 
         if (seen.find(value) != seen.end()) {
-            std::cerr << "Error" << std::endl;
+            std::cerr << "Error: Duplicate number found: " << value << std::endl;
             return false;
         }
         seen.insert(value);
@@ -208,10 +213,6 @@ void PmergeMe::fordJohnsonVector() {
 
     // Step 3: Build main chain and pend with paired positions
     buildChainsVector(pairs, mainChain, pend, pendPairedPos);
-
-    // TODO: rm later
-    // printVector(mainChain, "Main chain: ");
-    // printVector(pend, "Pend chain: ");
 
     // Step 4: Insert pend elements using Jacobsthal order
     insertPendVector(mainChain, pend, pendPairedPos);
