@@ -90,17 +90,34 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
 void PmergeMe::sort() {
     double start, end;
     
+    
     // Time vector sorting
     start = getTime();
     fordJohnsonVector();
     end = getTime();
     vecTime = end - start;
-    
+
     // TODO: Time deque sorting
-    // start = getTime();
-    // fordJohnsonDeque();
-    // end = getTime();
-    // deqTime = end - start;
+    start = getTime();
+    fordJohnsonDeque();
+    end = getTime();
+    deqTime = end - start;
+
+    printVector(original, "Before:\t");
+    printVector(vec, "After:\t");
+
+    std::cout << "Time to process a range of\t" 
+        << original.size()
+        << "  elements with  std::vector : "
+        << vecTime
+        << " us"
+        << std::endl;
+    std::cout << "Time to process a range of\t" 
+        << original.size()
+        << "  elements with  std::deque : "
+        << deqTime
+        << " us"
+        << std::endl;
 }
 
 bool PmergeMe::initialize(int argc, char** argv) {
@@ -154,7 +171,7 @@ bool PmergeMe::parseArguments(int argc, char** argv) {
             return false;
         }
         
-        if (number <= 0 || number > 2147483647) { // INT_MAX
+        if (number < 0 || number > 2147483647) { // INT_MAX
             std::cerr << "Error" << std::endl;
             return false;
         }
@@ -171,7 +188,6 @@ bool PmergeMe::parseArguments(int argc, char** argv) {
         vec.push_back(value);
         deq.push_back(value);
     }
-    printVector(original, "Before: ");
     return true;
 }
 
@@ -194,8 +210,8 @@ void PmergeMe::fordJohnsonVector() {
     buildChainsVector(pairs, mainChain, pend, pendPairedPos);
 
     // TODO: rm later
-    printVector(mainChain, "Main chain: ");
-    printVector(pend, "Pend chain: ");
+    // printVector(mainChain, "Main chain: ");
+    // printVector(pend, "Pend chain: ");
 
     // Step 4: Insert pend elements using Jacobsthal order
     insertPendVector(mainChain, pend, pendPairedPos);
@@ -309,6 +325,141 @@ void PmergeMe::binaryInsertVector(std::vector<int>& mainChain,
             int value,
             size_t left,
             size_t right) {
+    // Binary search to find insertion position
+    while (left < right) {
+        size_t mid = left + (right - left) / 2;
+
+        if (value < mainChain[mid])
+            right = mid;      // Search left half
+        else
+            left = mid + 1;   // Search right half
+    }
+
+    // Insert at position 'left'
+    mainChain.insert(mainChain.begin() + left, value);
+}
+
+void PmergeMe::fordJohnsonDeque() {
+    if (deq.size() <= 1)
+        return;
+
+    int straggler = -1;
+    std::deque<int> mainChain;
+    std::deque<int> pend;
+    std::vector<size_t> pendPairedPos;  // Keep as vector for efficiency
+
+    // Step 1: Create pairs
+    std::deque<std::pair<int, int> > pairs = createPairsDeque(straggler);
+    
+    // Step 2: Sort pairs by larger element
+    std::sort(pairs.begin(), pairs.end(), comparePairs);
+
+    // Step 3: Build main chain and pend with paired positions
+    buildChainsDeque(pairs, mainChain, pend, pendPairedPos);
+
+    // Step 4: Insert pend elements using Jacobsthal order
+    insertPendDeque(mainChain, pend, pendPairedPos);
+
+    if (straggler != -1)
+        binaryInsertDeque(mainChain, straggler, 0, mainChain.size());
+
+    // Update deq with sorted result
+    deq = mainChain;
+}
+
+std::deque<std::pair<int, int> > PmergeMe::createPairsDeque(int& straggler) {
+    std::deque<std::pair<int, int> > pairs;
+    
+    for (size_t i = 0; i + 1 < deq.size(); i += 2) {
+        int a = deq[i];
+        int b = deq[i + 1];
+        // One-liner: pair is always (min, max)
+        pairs.push_back(a < b ? std::make_pair(a, b) : std::make_pair(b, a));
+    }
+    
+    if (deq.size() % 2 == 1)
+        straggler = deq[deq.size() - 1];
+    
+    return pairs;
+}
+
+void PmergeMe::buildChainsDeque(const std::deque<std::pair<int, int> >& pairs, 
+                                std::deque<int>& mainChain, 
+                                std::deque<int>& pend,
+                                std::vector<size_t>& pendPairedPos) {
+    if (pairs.empty())
+        return;
+    
+    // Add both elements from the first pair
+    mainChain.push_back(pairs[0].first);
+    mainChain.push_back(pairs[0].second);
+    
+    // Start from index 1
+    for (size_t i = 1; i < pairs.size(); i++) {
+        pend.push_back(pairs[i].first);           // Add smaller element
+        pendPairedPos.push_back(mainChain.size()); // Remember position BEFORE adding larger
+        mainChain.push_back(pairs[i].second);     // Add larger element
+    }
+}
+
+void PmergeMe::insertPendDeque(std::deque<int>& mainChain,
+                                const std::deque<int>& pend,
+                                const std::vector<size_t>& pendPairedPos) {
+    if (pend.empty())
+        return;
+    
+    std::vector<size_t> jacobSeq = generateJacobsthalSequence(pend.size());
+    std::vector<bool> inserted(pend.size(), false);
+    std::vector<size_t> pairedPos = pendPairedPos; // Copy to track updates
+    
+    // Step 1: Insert pend[0] first
+    binaryInsertDeque(mainChain, pend[0], 0, pairedPos[0] + 1);
+    inserted[0] = true;
+    
+    // Update all paired positions after this insertion
+    for (size_t i = 1; i < pairedPos.size(); i++) {
+        if (pairedPos[i] >= pairedPos[0])
+            pairedPos[i]++;  // Shift right because we inserted before it
+    }
+    
+    // Step 2: Use Jacobsthal order
+    size_t prevIndex = 0;
+    
+    for (size_t i = 0; i < jacobSeq.size(); i++) {
+        size_t currentIndex = jacobSeq[i];
+        if (currentIndex >= pend.size())
+            currentIndex = pend.size() - 1;
+        
+        // Insert backwards from currentIndex to prevIndex + 1
+        for (size_t j = currentIndex; j > prevIndex; j--) {
+            if (j < pend.size() && !inserted[j]) {
+                // Use the tracked paired position!
+                binaryInsertDeque(mainChain, pend[j], 0, pairedPos[j] + 1);
+                inserted[j] = true;
+                
+                // Update positions for remaining elements
+                for (size_t k = 0; k < pairedPos.size(); k++) {
+                    if (!inserted[k] && pairedPos[k] >= pairedPos[j])
+                        pairedPos[k]++;
+                }
+            }
+        }
+        
+        prevIndex = currentIndex;
+    }
+    
+    // Step 3: Insert any remaining
+    for (size_t i = 0; i < pend.size(); i++) {
+        if (!inserted[i]) {
+            binaryInsertDeque(mainChain, pend[i], 0, pairedPos[i] + 1);
+        }
+    }
+}
+
+void PmergeMe::binaryInsertDeque(std::deque<int>& mainChain,
+                                int value,
+                                size_t left,
+                                size_t right) {
     // Binary search to find insertion position
     while (left < right) {
         size_t mid = left + (right - left) / 2;

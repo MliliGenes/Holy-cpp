@@ -9,7 +9,7 @@
 #include <sys/time.h>
 #include <iomanip>
 
-typedef std::string string ;
+typedef std::string string;
 
 class PmergeMe {
     private:
@@ -37,7 +37,12 @@ class PmergeMe {
         
         std::vector<size_t> generateJacobsthalSequence(size_t size);
         size_t jacobsthal(size_t n);
-        
+
+
+
+
+
+
         // ===== FORD-JOHNSON ALGORITHM FOR VECTOR =====
         
         void fordJohnsonVector();
@@ -65,27 +70,33 @@ class PmergeMe {
                             int value,
                             size_t left,
                             size_t right);
-        
+
+
+
+
+
         // ===== FORD-JOHNSON ALGORITHM FOR DEQUE =====
-        
+
         void fordJohnsonDeque();
-        
+
         // Step 1: Create and sort pairs
         std::deque<std::pair<int, int> > createPairsDeque(int& straggler);
-        
-        // Step 2: Recursively sort pairs
-        void mergeSortPairsDeque(std::deque<std::pair<int, int> >& pairs, int left, int right);
-        void mergePairsDeque(std::deque<std::pair<int, int> >& pairs, int left, int mid, int right);
-        
-        // Step 3: Build main chain and pend
+
+        // Step 2: Sort pairs by larger element (using std::sort, so these are no longer needed)
+        // void mergeSortPairsDeque(std::deque<std::pair<int, int> >& pairs, int left, int right);
+        // void mergePairsDeque(std::deque<std::pair<int, int> >& pairs, int left, int mid, int right);
+
+        // Step 3: Build main chain and pend with paired position tracking
         void buildChainsDeque(const std::deque<std::pair<int, int> >& pairs,
                             std::deque<int>& mainChain,
-                            std::deque<int>& pend);
-        
-        // Step 4: Insert pend elements
+                            std::deque<int>& pend,
+                            std::vector<size_t>& pendPairedPos);
+
+        // Step 4: Insert pend elements using Jacobsthal order with paired positions
         void insertPendDeque(std::deque<int>& mainChain,
-                            const std::deque<int>& pend);
-        
+                            const std::deque<int>& pend,
+                            const std::vector<size_t>& pendPairedPos);
+
         // Binary insertion helper
         void binaryInsertDeque(std::deque<int>& mainChain,
                             int value,
